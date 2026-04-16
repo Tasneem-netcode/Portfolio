@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  --color-porcelain: #ebe5e0;
+  --color-oat: #e3d5b5;
+  --color-gold: #c8a47a;
+  --color-drift: #969284;
+  --color-mahogany: #5b331e;
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: 'Playfair Display', serif;
+  --font-cursive: 'Great Vibes', cursive;
+  --font-script: 'Great Vibes', cursive;
+}
+
+@layer base {
+  body {
+    @apply bg-porcelain text-mahogany font-sans antialiased overflow-x-hidden;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif;
+  }
+}
+
+@layer utilities {
+  .mask-gradient-bottom {
+    mask-image: linear-gradient(to bottom, black 10%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 10%, transparent 100%);
+  }
+  .mask-gradient-top {
+    mask-image: linear-gradient(to top, black 10%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to top, black 10%, transparent 100%);
+  }
+  .mask-gradient-right {
+    mask-image: linear-gradient(to right, black 10%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, black 10%, transparent 100%);
+  }
+  .mask-gradient-left {
+    mask-image: linear-gradient(to left, black 10%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to left, black 10%, transparent 100%);
+  }
+}
+
+/* ─── Marquee Animations ─── */
+@keyframes marquee-primary {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes spin-carousel {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(-360deg); }
+}
+
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Pause marquee on hover */
+.marquee-track:hover > div {
+  animation-play-state: paused;
+}
+
+/* ─── Heaven Gates CTA Glow ─── */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 4px 30px rgba(88,51,30,0.06), inset 0 1px 0 rgba(255,255,255,0.6), 0 0 0 0 rgba(227,214,181,0); }
+  50% { box-shadow: 0 4px 30px rgba(88,51,30,0.06), inset 0 1px 0 rgba(255,255,255,0.6), 0 0 30px 8px rgba(227,214,181,0.25); }
+}
+
+#about a:hover {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
