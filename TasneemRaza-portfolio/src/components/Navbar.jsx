@@ -19,32 +19,25 @@ export default function Navbar() {
   const links = [
     { name: "Work", path: "/" },
     { name: "Writing", path: "/writing" },
-    { name: "Lab", path: "/lab" }
+    { name: "Process", path: "/process" },
+    { name: "Services", path: "/services" }
   ];
 
   return (
     <>
-      {/* Seamless Gradient Glassmorphism Blur Background (Top) */}
+      {/* Top fade — simple gradient, no backdrop-blur for performance */}
       <div 
         className="fixed top-0 left-0 right-0 h-28 md:h-36 z-40 pointer-events-none"
         style={{
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          WebkitMaskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)',
-          maskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)',
-          background: 'linear-gradient(to bottom, rgba(235, 229, 224, 0.8) 0%, rgba(235, 229, 224, 0) 100%)'
+          background: 'linear-gradient(to bottom, rgba(235,229,224,0.95) 0%, rgba(235,229,224,0.7) 40%, rgba(235,229,224,0) 100%)'
         }}
       />
       
-      {/* Seamless Gradient Glassmorphism Blur Background (Bottom) */}
+      {/* Bottom fade — simple gradient, no backdrop-blur for performance */}
       <div 
-        className="fixed bottom-0 left-0 right-0 h-24 md:h-32 z-40 pointer-events-none"
+        className="fixed bottom-0 left-0 right-0 h-32 md:h-32 z-40 pointer-events-none"
         style={{
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          WebkitMaskImage: 'linear-gradient(to top, black 50%, transparent 100%)',
-          maskImage: 'linear-gradient(to top, black 50%, transparent 100%)',
-          background: 'linear-gradient(to top, rgba(235, 229, 224, 0.8) 0%, rgba(235, 229, 224, 0) 100%)'
+          background: 'linear-gradient(to top, rgba(235,229,224,0.95) 0%, rgba(235,229,224,0.7) 40%, rgba(235,229,224,0) 100%)'
         }}
       />
 
@@ -77,66 +70,68 @@ export default function Navbar() {
           scale: scrolled ? 0.95 : 1
         }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], y: { duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] } }}
-        className="fixed bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-50 pointer-events-auto"
+        className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-auto max-w-[90vw] md:max-w-none w-max"
       >
-        <div className="flex flex-wrap items-center justify-center gap-1 md:gap-2 p-1.5 rounded-full bg-mahogany/85 backdrop-blur-xl border border-porcelain/20 shadow-[0_8px_32px_rgba(88,51,30,0.4)] relative">
+        <div className="flex items-center p-1.5 rounded-full bg-mahogany/95 backdrop-blur-xl border border-porcelain/20 shadow-[0_8px_32px_rgba(88,51,30,0.4)] relative overflow-hidden">
           
-          {links.map(link => {
-            const isActive = location.pathname === link.path;
-            
-            return (
-              <Link
-                key={link.name}
-                to={link.path}
-                className="group relative px-4 md:px-5 py-2 md:py-2.5 rounded-full overflow-hidden transition-all duration-300"
-              >
-                {isActive && (
-                  <motion.div
-                    layoutId="nav-pill"
-                    className="absolute inset-0 bg-gold/10 rounded-full mix-blend-screen"
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  />
-                )}
-                
-                <div className="relative z-10 flex items-center gap-2">
-                  {/* 4px dot */}
-                  <AnimatePresence>
-                    {isActive && (
-                      <motion.div
-                        initial={{ scale: 0, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        exit={{ scale: 0, opacity: 0 }}
-                        className="w-1 h-1 rounded-full bg-gold"
-                      />
-                    )}
-                  </AnimatePresence>
+          <div className="flex items-center overflow-x-auto overflow-y-hidden hide-scrollbar scroll-smooth pl-1 pr-1 md:pr-0">
+            {links.map(link => {
+              const isActive = location.pathname === link.path;
+              
+              return (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className="group relative px-4 md:px-5 py-2 md:py-2.5 rounded-full flex-shrink-0 overflow-hidden transition-all duration-300"
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="nav-pill"
+                      className="absolute inset-0 bg-gold/15 rounded-full mix-blend-screen"
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                  )}
                   
-                  <span className={`text-base md:text-xl font-serif italic tracking-wide transition-colors duration-300 ${isActive ? 'text-white' : 'text-porcelain/70 group-hover:text-white'}`}>
-                    {link.name}
-                  </span>
-                </div>
-              </Link>
-            );
-          })}
+                  <div className="relative z-10 flex items-center gap-2">
+                    {/* 4px dot */}
+                    <AnimatePresence>
+                      {isActive && (
+                        <motion.div
+                          initial={{ scale: 0, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          exit={{ scale: 0, opacity: 0 }}
+                          className="w-1 h-1 rounded-full bg-gold shrink-0"
+                        />
+                      )}
+                    </AnimatePresence>
+                    
+                    <span className={`text-base md:text-xl font-serif italic tracking-wide transition-colors duration-300 ${isActive ? 'text-white' : 'text-porcelain/70 group-hover:text-white'}`}>
+                      {link.name}
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
 
-          <div className="w-px h-6 bg-porcelain/20 mx-1 md:mx-2 hidden md:block" />
+            <div className="w-px h-6 bg-porcelain/20 mx-2 flex-shrink-0" />
 
-          {/* Resume Ghost Outlined Pill */}
-          <a
-            href="/resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group px-4 py-2 rounded-full border border-porcelain/30 text-porcelain hover:bg-porcelain/10 transition-all duration-300 hidden md:flex items-center text-sm font-sans"
-          >
-            Resume ↗
-          </a>
+            {/* Resume Text Link inside scrollable area (mobile friendly) md:hidden or flex? */}
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 text-porcelain/70 hover:text-white transition-all duration-300 font-serif italic text-base md:text-xl flex-shrink-0 flex items-center"
+            >
+              Resume ↗
+            </a>
+          </div>
 
-          <GlowButton
-            href="#contact"
-            className="ml-1 md:ml-0 hidden md:inline-flex"
-          >
-            Get in touch
-          </GlowButton>
+          {/* Fixed Get in touch so it doesn't scroll away */}
+          <div className="hidden md:flex items-center pl-2 pr-1 border-l border-porcelain/20 ml-2">
+            <GlowButton href="#contact" className="hidden md:flex">
+              Get in touch
+            </GlowButton>
+          </div>
         </div>
       </motion.nav>
     </>

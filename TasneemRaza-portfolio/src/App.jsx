@@ -9,8 +9,9 @@ import Contact from './components/Contact';
 import Background from './components/Background';
 import Writing from './components/Writing';
 import Skills from './components/Skills';
-import Lab from './components/Lab';
 import Cursor from './components/Cursor';
+import Process from './components/Process';
+import Services from './components/Services';
 
 function Home() {
   return (
@@ -49,8 +50,10 @@ function AnimatedRoutes() {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Home />} />
         <Route path="/writing" element={<PageWrapper><Writing /></PageWrapper>} />
-        <Route path="/lab" element={<PageWrapper><Lab /></PageWrapper>} />
+        <Route path="/process" element={<PageWrapper><Process /></PageWrapper>} />
+        <Route path="/services" element={<PageWrapper><Services /></PageWrapper>} />
       </Routes>
+
     </AnimatePresence>
   );
 }

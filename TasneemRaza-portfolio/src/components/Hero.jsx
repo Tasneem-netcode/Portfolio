@@ -7,19 +7,16 @@ import GlowButton from './GlowButton';
 const images = [
   { src: '/img1.png', label: 'Landing Page' },
   { src: '/img2.png', label: 'Interior' },
-  // { src: '/img3.png', label: 'Minimal' },
-  // { src: '/img4.png', label: 'Modern' },
-  // { src: '/img5.png', label: 'Organic' },
-  // { src: '/img6.png', label: 'Dreamy' },
-  // { src: '/img7.png', label: 'Organic' },
+  { src: '/img3.png', label: 'Minimal' },
+  { src: '/img4.png', label: 'Modern' },
+  { src: '/img5.png', label: 'Organic' },
+  { src: '/img6.png', label: 'Dreamy' },
+  { src: '/img7.png', label: 'Organic' },
   { src: '/img8.png', label: 'Dreamy' },
   { src: '/img9.png', label: 'Organic' },
   { src: '/img10.png', label: 'Dreamy' },
   { src: '/img11.png', label: 'Organic' },
   { src: '/img12.png', label: 'Dreamy' },
-  { src: '/img13.png', label: 'Organic' },
-  { src: '/img14.png', label: 'Dreamy' },
-  { src: '/img15.png', label: 'Organic' },
   { src: '/img16.png', label: 'Dreamy' },
 ];
 const doubled = [...images, ...images];
@@ -35,24 +32,53 @@ export default function Hero() {
           
 
         {/* Dynamic Inline Image H1 */}
-        <h1 className="font-serif text-[3rem] sm:text-[4rem] md:text-[5rem] lg:text-[5.5rem] text-mahogany font-light leading-[1.1] tracking-tight relative flex flex-col items-center gap-y-1 w-full">
+        <motion.h1 
+          className="font-serif text-[3rem] sm:text-[4rem] md:text-[5rem] lg:text-[5.5rem] text-mahogany font-light leading-[1.1] tracking-tight relative flex flex-col items-center gap-y-1 w-full"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
+        >
           
-          <motion.span 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          >
-            Designed with intention,
-          </motion.span>
+          <div className="flex flex-wrap justify-center w-full">
+            {"Designed with intention,".split(" ").map((word, i) => (
+              <motion.span 
+                 key={`title-1-${i}`} 
+                 variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+                 }}
+                 className="inline-block mr-[0.25em]"
+              >
+                 {word}
+              </motion.span>
+            ))}
+          </div>
 
-          <motion.span 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          >
-            built to <span className="italic text-drift">perform.</span>
-          </motion.span>
-        </h1>
+          <div className="flex flex-wrap justify-center w-full">
+            {"built to".split(" ").map((word, i) => (
+               <motion.span 
+                 key={`title-2-${i}`} 
+                 variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+                 }}
+                 className="inline-block mr-[0.25em]"
+               >
+                 {word}
+               </motion.span>
+            ))}
+            <motion.span 
+              variants={{
+                 hidden: { opacity: 0, y: 20 },
+                 visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+              }}
+              className="inline-block italic text-drift ml-[0.25em]"
+            >
+              perform.
+            </motion.span>
+          </div>
+        </motion.h1>
 
         {/* Prominent Name Header */}
         <motion.div
@@ -124,16 +150,15 @@ export default function Hero() {
               <div
                 key={i}
                 className="group flex-shrink-0 relative"
-                style={{ animation: 'float-gentle 16s ease-in-out infinite', animationDelay: `${i * 0.4}s` }}
               >
                 <div
                   className="w-[320px] md:w-[480px] lg:w-[600px] xl:w-[700px] h-[240px] md:h-[360px] lg:h-[450px] xl:h-[500px] rounded-[24px] md:rounded-[32px] p-2 md:p-3 overflow-hidden bg-white/80 transition-all duration-1000 group-hover:scale-[1.02] border border-white/60 shadow-[0_8px_40px_rgba(88,51,30,0.06)]"
                 >
-                   <div className="w-full h-full rounded-[16px] md:rounded-[22px] overflow-hidden border border-mahogany/10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.03)]">
+                   <div className="w-full h-full rounded-[16px] md:rounded-[22px] overflow-hidden border border-mahogany/10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.03)] premium-img-wrapper">
                      <img
                        src={img.src}
                        alt={img.label}
-                       className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                       className="w-full h-full object-cover"
                        loading="lazy"
                      />
                    </div>

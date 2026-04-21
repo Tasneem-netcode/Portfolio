@@ -3,6 +3,29 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react';
 import GlowButton from './GlowButton';
 
+const RevealText = ({ text, className, stagger = 0.03 }) => {
+  return (
+    <motion.div 
+      initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }}
+      variants={{ visible: { transition: { staggerChildren: stagger } } }}
+      className={`${className} flex flex-wrap`}
+    >
+      {text.split(" ").map((word, i) => (
+        <motion.span 
+          key={i}
+          variants={{
+             hidden: { opacity: 0, y: 15 },
+             visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+          }}
+          className="inline-block mr-[0.25em]"
+        >
+          {word}
+        </motion.span>
+      ))}
+    </motion.div>
+  );
+};
+
 const articles = [
   {
     id: 1,
@@ -32,28 +55,9 @@ const articles = [
 
 const tags = ["All", "Emotional", "Technical", "Curious"];
 
-const TitleWord = ({ text, i, total, scrollYProgress }) => {
-  const start = i / total;
-  const end = start + (1 / total);
-  
-  // Smoothly blend from muted beige-gray to strong warm brown based on scroll progress
-  const color = useTransform(
-    scrollYProgress, 
-    [start, end], 
-    ["rgba(150,146,132,0.3)", "rgba(91,51,30,1)"]
-  );
-
-  return <motion.span style={{ color }} className="transition-colors duration-100">{text}</motion.span>;
-};
 
 const ArticleItem = ({ article }) => {
   const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start 90%", "center center"]
-  });
-
-  const words = article.title.split(" ");
 
   return (
     <motion.a
@@ -83,14 +87,7 @@ const ArticleItem = ({ article }) => {
           </span>
         </div>
         
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-serif font-medium tracking-tight">
-          {words.map((word, i) => (
-            <span key={i}>
-              <TitleWord text={word} i={i} total={words.length} scrollYProgress={scrollYProgress} />
-              {i < words.length - 1 && " "}
-            </span>
-          ))}
-        </h2>
+        <RevealText text={article.title} className="text-2xl md:text-3xl lg:text-4xl font-serif font-medium tracking-tight text-mahogany" />
       </div>
       
       <GlowButton isCircular={true} className="w-12 h-12 shrink-0">
@@ -117,12 +114,38 @@ export default function Writing() {
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           className="mb-16 text-center md:text-left"
         >
-          <h1 className="text-5xl md:text-7xl font-serif font-medium text-mahogany tracking-tight mb-6">
-            After Hours
-          </h1>
-          <p className="text-drift text-lg md:text-xl font-sans font-light max-w-lg">
-            A collection of my thoughts on design, engineering, and the spaces where they intersect.
-          </p>
+          <motion.h1 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-10%" }}
+            variants={{
+              visible: { transition: { staggerChildren: 0.08 } }
+            }}
+            className="text-5xl md:text-7xl font-serif font-medium text-mahogany tracking-tight mb-6"
+          >
+            {"After ".split(" ").map((word, i) => (
+              <motion.span 
+                key={`after-${i}`} 
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+                }}
+                className="inline-block mr-[0.25em]"
+              >
+                {word}
+              </motion.span>
+            ))}
+            <motion.span 
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+              }}
+              className="text-drift italic inline-block"
+            >
+              Hours
+            </motion.span>
+          </motion.h1>
+          <RevealText text="A collection of my thoughts on design, engineering, and the spaces where they intersect." className="text-drift text-lg md:text-xl font-sans font-light max-w-lg mt-2 justify-center md:justify-start" stagger={0.02} />
         </motion.div>
 
         {/* Filters */}

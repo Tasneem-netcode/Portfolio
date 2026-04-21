@@ -16,7 +16,7 @@ export default function About() {
         <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#E3D5B5] rounded-full blur-[120px] opacity-50" />
         <div className="absolute top-[20%] right-[-10%] w-[40%] h-[60%] bg-[#E8E5E0] rounded-full blur-[100px] opacity-80" />
         <div className="absolute bottom-[-10%] left-[30%] w-[50%] h-[50%] bg-[#969284] rounded-full blur-[120px] opacity-20" />
-        <div className="absolute inset-0 bg-[#E8E5E0]/40 backdrop-blur-[40px]" />
+        <div className="absolute inset-0 bg-[#E8E5E0]/60" />
       </div>
 
       <div className="relative z-10 max-w-6xl w-full flex flex-col items-center text-center">
@@ -44,17 +44,46 @@ export default function About() {
           </div>
         </motion.div>
 
-        {/* Main Text */}
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="text-[1.8rem] md:text-[3rem] lg:text-[3.4rem] leading-[1.4] md:leading-[1.3] font-serif font-light mb-20 md:mb-32 text-[#58331E] max-w-5xl tracking-tight"
+        {/* Main Text with 'Spark' word-by-word staggered reveal */}
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-10%" }}
+          variants={{
+            visible: {
+              transition: { staggerChildren: 0.05 }
+            }
+          }}
+          className="text-[1.8rem] md:text-[3rem] lg:text-[3.4rem] leading-[1.4] md:leading-[1.3] font-serif font-light mb-20 md:mb-32 max-w-5xl tracking-tight"
         >
-          I help brands and visionaries craft meaningful, <br className="hidden lg:block"/>
-          digital experiences <span className="text-drift">that build trust, comfort, and connection by turning <br className="hidden lg:block"/>complex code into interfaces people truly love.</span>
-        </motion.p>
+          {/* Main mahogany text */}
+          {"I help brands and visionaries craft meaningful, digital experiences ".split(" ").map((word, i) => (
+            <motion.span 
+              key={i} 
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+              }}
+              className="inline-block mr-[0.25em] text-[#58331E]"
+            >
+              {word}
+            </motion.span>
+          ))}
+          
+          {/* Secondary drift text */}
+          {"that build trust, comfort, and connection by turning complex code into interfaces people truly love.".split(" ").map((word, i) => (
+            <motion.span 
+              key={`drift-${i}`} 
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+              }}
+              className="inline-block mr-[0.25em] text-drift"
+            >
+              {word}
+            </motion.span>
+          ))}
+        </motion.div>
 
         {/* Bottom Chips mapping */}
         <motion.div 
