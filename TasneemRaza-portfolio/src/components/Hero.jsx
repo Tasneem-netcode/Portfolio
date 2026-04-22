@@ -116,7 +116,7 @@ export default function Hero() {
             <ArrowUpRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </GlowButton>
           <a
-            href="/resume.pdf"
+            href="/Resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="group px-6 py-3 rounded-full border border-mahogany/30 text-mahogany hover:bg-mahogany/5 transition-all duration-300 flex items-center shadow-sm"

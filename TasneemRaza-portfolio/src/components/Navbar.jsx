@@ -117,7 +117,7 @@ export default function Navbar() {
 
             {/* Resume Text Link inside scrollable area (mobile friendly) md:hidden or flex? */}
             <a
-              href="/resume.pdf"
+              href="/Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 text-porcelain/70 hover:text-white transition-all duration-300 font-serif italic text-base md:text-xl flex-shrink-0 flex items-center"
