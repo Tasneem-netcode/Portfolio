@@ -24,10 +24,25 @@ const skillsData = [
 export default function Skills() {
   const containerRef = useRef(null);
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
   const doubledSkills = [...skillsData, ...skillsData];
 
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  // Responsive carousel parameters
+  const cardWidth = isMobile ? 160 : 280;
+  const cardHeight = isMobile ? 220 : 380;
+  const radius = isMobile ? 1200 : 2000;
+  const perspectiveZ = isMobile ? 500 : 800;
+  const imgSize = isMobile ? 'w-20 h-20' : 'w-40 h-40 md:w-48 md:h-48';
+
   return (
-    <section id="skills" className="relative w-full bg-porcelain pt-24 pb-24 md:pt-36 md:pb-32 z-20 font-serif overflow-hidden min-h-screen flex flex-col justify-start">
+    <section id="skills" className="relative w-full bg-porcelain pt-16 pb-16 sm:pt-24 sm:pb-24 md:pt-36 md:pb-32 z-20 font-serif overflow-hidden flex flex-col justify-start">
       {/* Heavenly Gradient Background */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-gold rounded-full blur-[120px] opacity-30" />
@@ -36,7 +51,7 @@ export default function Skills() {
         <div className="absolute inset-0 bg-porcelain/60" />
       </div>
 
-      <div className="w-full flex flex-col items-center text-center z-10 pointer-events-none px-6 mt-8 md:mt-12 mb-8 md:mb-16">
+      <div className="w-full flex flex-col items-center text-center z-10 pointer-events-none px-4 sm:px-6 mt-6 sm:mt-8 md:mt-12 mb-6 sm:mb-8 md:mb-16">
         <motion.h2 
           initial="hidden"
           whileInView="visible"
@@ -44,7 +59,7 @@ export default function Skills() {
           variants={{
             visible: { transition: { staggerChildren: 0.08 } }
           }}
-          className="font-serif text-5xl md:text-7xl lg:text-[6rem] text-mahogany font-light leading-none"
+          className="font-serif text-3xl sm:text-5xl md:text-7xl lg:text-[6rem] text-mahogany font-light leading-none"
         >
           {"Craft &".split(" ").map((word, i) => (
             <motion.span 
@@ -71,53 +86,55 @@ export default function Skills() {
         </motion.h2>
       </div>
 
-      {/* 3D Curved Carousel Area */}
+      {/* ──── 3D Curved Carousel (All Screens) ──── */}
       <div 
-        className="relative z-10 w-full overflow-hidden py-24 md:py-32 flex items-center justify-center"
+        className="relative z-10 w-full overflow-hidden py-12 sm:py-24 md:py-32 flex items-center justify-center"
         style={{ perspective: '1000px' }}
       >
         
         {/* Cloudy fade: Left */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 md:w-56 lg:w-[22rem] z-30 pointer-events-none bg-gradient-to-r from-[#ebe5e0] via-[#ebe5e0]/80 to-transparent" />
+        <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 md:w-56 lg:w-[22rem] z-30 pointer-events-none bg-gradient-to-r from-[#ebe5e0] via-[#ebe5e0]/80 to-transparent" />
         {/* Cloudy fade: Right */}
-        <div className="absolute right-0 top-0 bottom-0 w-32 md:w-56 lg:w-[22rem] z-30 pointer-events-none bg-gradient-to-l from-[#ebe5e0] via-[#ebe5e0]/80 to-transparent" />
+        <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 md:w-56 lg:w-[22rem] z-30 pointer-events-none bg-gradient-to-l from-[#ebe5e0] via-[#ebe5e0]/80 to-transparent" />
 
         {/* 3D Rotator */}
-        <div style={{ transform: 'translateZ(800px)', transformStyle: 'preserve-3d' }} className="mt-12 md:mt-16">
+        <div style={{ transform: `translateZ(${perspectiveZ}px)`, transformStyle: 'preserve-3d' }} className="mt-6 sm:mt-12 md:mt-16">
           <div 
-           className="relative flex items-center justify-center w-[280px] md:w-[320px]"
+           className="relative flex items-center justify-center"
            style={{
-             transformStyle: 'preserve-3d',
-             animation: 'spin-carousel 120s linear infinite',
-             animationPlayState: hoveredCard ? 'paused' : 'running',
-             willChange: 'transform'
-           }}
+              width: `${cardWidth}px`,
+              transformStyle: 'preserve-3d',
+              animation: `spin-carousel ${isMobile ? '80s' : '120s'} linear infinite`,
+              animationPlayState: hoveredCard ? 'paused' : 'running',
+              willChange: 'transform'
+            }}
         >
           {doubledSkills.map((skill, i) => {
             const uniqueId = `${skill.id}-${i}`;
             const isHovered = hoveredCard === uniqueId;
             
             const angle = i * (360 / doubledSkills.length);
-            const radius = 2000;
 
             return (
               <div
                 key={uniqueId}
                 onMouseEnter={() => setHoveredCard(uniqueId)}
                 onMouseLeave={() => setHoveredCard(null)}
-                className="absolute top-1/2 left-1/2 -mt-[190px] -ml-[140px] md:-ml-[160px]"
+                className="absolute top-1/2 left-1/2"
                 style={{
-                  width: '280px',
-                  height: '380px',
+                  width: `${cardWidth}px`,
+                  height: `${cardHeight}px`,
+                  marginTop: `${-cardHeight / 2}px`,
+                  marginLeft: `${-cardWidth / 2}px`,
                   transform: `rotateY(${angle}deg) translateZ(${-radius}px)`,
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden',
                   transformStyle: 'preserve-3d'
                 }}
               >
-                <div className="group relative flex flex-col items-center justify-center p-6 bg-[#fdfaf6] rounded-[2.5rem] w-full h-full border border-white/60 shadow-[0_20px_40px_rgba(88,51,30,0.06)] transition-all duration-300 cursor-pointer">
+                <div className={`group relative flex flex-col items-center justify-center ${isMobile ? 'p-3' : 'p-6'} bg-[#fdfaf6] rounded-[2rem] sm:rounded-[2.5rem] w-full h-full border border-white/60 shadow-[0_20px_40px_rgba(88,51,30,0.06)] transition-all duration-300 cursor-pointer`}>
                   
-                  <div className={`w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden mb-6 flex items-center justify-center transform transition-transform duration-500 ease-[0.16,1,0.3,1] ${isHovered ? '-translate-y-2 scale-105' : ''}`}>
+                  <div className={`${imgSize} rounded-full overflow-hidden ${isMobile ? 'mb-3' : 'mb-6'} flex items-center justify-center transform transition-transform duration-500 ease-[0.16,1,0.3,1] ${isHovered ? '-translate-y-2 scale-105' : ''}`}>
                     <img 
                       src={`/${skill.img}`} 
                       alt={skill.name} 
@@ -127,11 +144,11 @@ export default function Skills() {
                     />
                   </div>
                   
-                  <span className="font-serif italic text-mahogany text-3xl font-medium tracking-wide text-center">
+                  <span className={`font-serif italic text-mahogany ${isMobile ? 'text-lg' : 'text-3xl'} font-medium tracking-wide text-center`}>
                     {skill.name}
                   </span>
 
-                  <div className="h-[40px] flex items-center justify-center w-full mt-2">
+                  <div className={`${isMobile ? 'h-[24px]' : 'h-[40px]'} flex items-center justify-center w-full mt-1 sm:mt-2`}>
                     <AnimatePresence mode="wait">
                       {!isHovered ? (
                         <motion.span 
@@ -139,7 +156,7 @@ export default function Skills() {
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
-                          className="font-sans font-medium text-drift text-sm md:text-base tracking-widest uppercase text-center block"
+                          className={`font-sans font-medium text-drift ${isMobile ? 'text-[9px]' : 'text-sm md:text-base'} tracking-widest uppercase text-center block`}
                         >
                           {skill.desc}
                         </motion.span>
@@ -149,7 +166,7 @@ export default function Skills() {
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
-                          className="font-sans text-mahogany/80 text-base leading-relaxed text-center font-bold block"
+                          className={`font-sans text-mahogany/80 ${isMobile ? 'text-xs' : 'text-base'} leading-relaxed text-center font-bold block`}
                         >
                           {skill.use}
                         </motion.span>

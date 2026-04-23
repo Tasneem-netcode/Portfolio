@@ -23,17 +23,16 @@ const doubled = [...images, ...images];
 
 export default function Hero() {
   return (
-    <section id="home" className="relative w-full overflow-x-hidden bg-transparent pt-[12vh] md:pt-[15vh] flex flex-col">
+    <section id="home" className="relative w-full overflow-x-hidden bg-transparent pt-[10vh] sm:pt-[12vh] md:pt-[15vh] flex flex-col">
 
       {/* ── Hero Text ── */}
-      <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 w-full max-w-6xl mx-auto">
+      <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 sm:px-6 w-full max-w-6xl mx-auto">
         
         
-          
 
         {/* Dynamic Inline Image H1 */}
         <motion.h1 
-          className="font-serif text-[3rem] sm:text-[4rem] md:text-[5rem] lg:text-[5.5rem] text-mahogany font-light leading-[1.1] tracking-tight relative flex flex-col items-center gap-y-1 w-full"
+          className="font-serif text-[2.2rem] sm:text-[3rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] text-mahogany font-light leading-[1.1] tracking-tight relative flex flex-col items-center gap-y-1 w-full"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
@@ -85,9 +84,9 @@ export default function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="mt-12 mb-2"
+          className="mt-8 sm:mt-10 md:mt-12 mb-2"
         >
-          <span className="font-cursive text-4xl md:text-5xl lg:text-[3.5rem] tracking-normal text-mahogany" style={{ lineHeight: 1 }}>
+          <span className="font-cursive text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] tracking-normal text-mahogany" style={{ lineHeight: 1 }}>
             Tasneem Raza
           </span>
         </motion.div>
@@ -97,7 +96,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="mt-2 text-drift font-sans font-light text-base md:text-lg max-w-2xl leading-relaxed px-4 text-center"
+          className="mt-2 text-drift font-sans font-light text-sm sm:text-base md:text-lg max-w-2xl leading-relaxed px-2 sm:px-4 text-center"
         >
           A CS student, frontend developer & designer 
           crafting beautiful web experiences for startups, brands, and 
@@ -109,7 +108,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="mt-8 md:mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 w-full"
+          className="mt-6 sm:mt-8 md:mt-12 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full"
         >
           <GlowButton href="#contact">
             Get In Touch Today
@@ -119,7 +118,7 @@ export default function Hero() {
             href="/Resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="group px-6 py-3 rounded-full border border-mahogany/30 text-mahogany hover:bg-mahogany/5 transition-all duration-300 flex items-center shadow-sm"
+            className="group px-5 sm:px-6 py-2.5 sm:py-3 rounded-full border border-mahogany/30 text-mahogany hover:bg-mahogany/5 transition-all duration-300 flex items-center shadow-sm text-sm sm:text-base"
           >
             View Resume <ArrowUpRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </a>
@@ -127,20 +126,20 @@ export default function Hero() {
       </div>
 
       {/* ── Infinite Marquee — seamless part of hero ── */}
-      <div className="relative z-10 pt-16 md:pt-20 pb-0">
+      <div className="relative z-10 pt-10 sm:pt-16 md:pt-20 pb-0">
         {/* Cloudy fade: Left */}
         <div
-          className="absolute left-0 top-0 bottom-0 w-36 md:w-64 lg:w-80 z-20 pointer-events-none bg-[#ebe5e0]/20 mask-gradient-right"
+          className="absolute left-0 top-0 bottom-0 w-16 sm:w-36 md:w-64 lg:w-80 z-20 pointer-events-none bg-[#ebe5e0]/20 mask-gradient-right"
         />
         {/* Cloudy fade: Right */}
         <div
-          className="absolute right-0 top-0 bottom-0 w-36 md:w-64 lg:w-80 z-20 pointer-events-none bg-[#ebe5e0]/20 mask-gradient-left"
+          className="absolute right-0 top-0 bottom-0 w-16 sm:w-36 md:w-64 lg:w-80 z-20 pointer-events-none bg-[#ebe5e0]/20 mask-gradient-left"
         />
 
         {/* Scrolling images */}
         <div className="marquee-track overflow-hidden">
           <div
-            className="flex w-max gap-8 md:gap-16"
+            className="flex w-max gap-4 sm:gap-8 md:gap-16"
             style={{
               animation: 'marquee-primary 200s linear infinite',
               willChange: 'transform',
@@ -152,9 +151,9 @@ export default function Hero() {
                 className="group flex-shrink-0 relative"
               >
                 <div
-                  className="w-[320px] md:w-[480px] lg:w-[600px] xl:w-[700px] h-[240px] md:h-[360px] lg:h-[450px] xl:h-[500px] rounded-[24px] md:rounded-[32px] p-2 md:p-3 overflow-hidden bg-white/80 transition-all duration-1000 group-hover:scale-[1.02] border border-white/60 shadow-[0_8px_40px_rgba(88,51,30,0.06)]"
+                  className="w-[240px] sm:w-[320px] md:w-[480px] lg:w-[600px] xl:w-[700px] h-[180px] sm:h-[240px] md:h-[360px] lg:h-[450px] xl:h-[500px] rounded-[16px] sm:rounded-[24px] md:rounded-[32px] p-1.5 sm:p-2 md:p-3 overflow-hidden bg-white/80 transition-all duration-1000 group-hover:scale-[1.02] border border-white/60 shadow-[0_8px_40px_rgba(88,51,30,0.06)]"
                 >
-                   <div className="w-full h-full rounded-[16px] md:rounded-[22px] overflow-hidden border border-mahogany/10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.03)] premium-img-wrapper">
+                   <div className="w-full h-full rounded-[10px] sm:rounded-[16px] md:rounded-[22px] overflow-hidden border border-mahogany/10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.03)] premium-img-wrapper">
                      <img
                        src={img.src}
                        alt={img.label}

@@ -37,7 +37,7 @@ const articles = [
   },
   {
     id: 2,
-    title: "Regex Isn’t Scary: The Secret Skill Every Developer Needs (But Rarely Masters)",
+    title: "Regex Isn't Scary: The Secret Skill Every Developer Needs (But Rarely Masters)",
     date: "Oct 17, 2025",
     readTime: "4 min read",
     mood: "Technical",
@@ -70,28 +70,28 @@ const ArticleItem = ({ article }) => {
       href={article.link}
       target="_blank"
       rel="noopener noreferrer"
-      className="group py-8 md:py-12 border-b border-mahogany/15 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 transition-colors hover:border-mahogany/40"
+      className="group py-6 sm:py-8 md:py-12 border-b border-mahogany/15 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 sm:gap-6 transition-colors hover:border-mahogany/40"
     >
       <div className="flex flex-col transform transition-transform duration-500 ease-[0.16,1,0.3,1] group-hover:-translate-y-1 w-full max-w-2xl">
-        <div className="flex items-center gap-4 mb-3">
-          <span className="text-xs font-mono tracking-widest text-drift uppercase">
+        <div className="flex items-center gap-2 sm:gap-4 mb-2 sm:mb-3 flex-wrap">
+          <span className="text-[10px] sm:text-xs font-mono tracking-widest text-drift uppercase">
             {article.date}
           </span>
           <span className="w-1 h-1 rounded-full bg-mahogany/20" />
-          <span className="text-xs font-mono tracking-widest text-drift uppercase">
+          <span className="text-[10px] sm:text-xs font-mono tracking-widest text-drift uppercase">
             {article.readTime}
           </span>
           <span className="w-1 h-1 rounded-full bg-mahogany/20" />
-          <span className="text-xs font-mono tracking-widest text-mahogany uppercase px-2 py-0.5 border border-mahogany/20 rounded-full">
+          <span className="text-[10px] sm:text-xs font-mono tracking-widest text-mahogany uppercase px-2 py-0.5 border border-mahogany/20 rounded-full">
             {article.mood}
           </span>
         </div>
         
-        <RevealText text={article.title} className="text-2xl md:text-3xl lg:text-4xl font-serif font-medium tracking-tight text-mahogany" />
+        <RevealText text={article.title} className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-medium tracking-tight text-mahogany" />
       </div>
       
-      <GlowButton isCircular={true} className="w-12 h-12 shrink-0">
-        <ArrowUpRight className="w-5 h-5 text-white transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+      <GlowButton isCircular={true} className="w-10 h-10 sm:w-12 sm:h-12 shrink-0">
+        <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 text-white transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
       </GlowButton>
     </motion.a>
   );
@@ -105,14 +105,14 @@ export default function Writing() {
   );
 
   return (
-    <section className="min-h-screen pt-48 pb-32 px-6 md:px-12 flex flex-col items-center bg-porcelain">
+    <section className="min-h-screen pt-32 sm:pt-40 md:pt-48 pb-20 sm:pb-32 px-4 sm:px-6 md:px-12 flex flex-col items-center bg-porcelain">
       <div className="w-full max-w-4xl relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16 text-center md:text-left"
+          className="mb-10 sm:mb-16 text-center md:text-left"
         >
           <motion.h1 
             initial="hidden"
@@ -121,7 +121,7 @@ export default function Writing() {
             variants={{
               visible: { transition: { staggerChildren: 0.08 } }
             }}
-            className="text-5xl md:text-7xl font-serif font-medium text-mahogany tracking-tight mb-6"
+            className="text-3xl sm:text-5xl md:text-7xl font-serif font-medium text-mahogany tracking-tight mb-4 sm:mb-6"
           >
             {"After ".split(" ").map((word, i) => (
               <motion.span 
@@ -145,7 +145,7 @@ export default function Writing() {
               Hours
             </motion.span>
           </motion.h1>
-          <RevealText text="A collection of my thoughts on design, engineering, and the spaces where they intersect." className="text-drift text-lg md:text-xl font-sans font-light max-w-lg mt-2 justify-center md:justify-start" stagger={0.02} />
+          <RevealText text="A collection of my thoughts on design, engineering, and the spaces where they intersect." className="text-drift text-base sm:text-lg md:text-xl font-sans font-light max-w-lg mt-2 justify-center md:justify-start" stagger={0.02} />
         </motion.div>
 
         {/* Filters */}
@@ -154,7 +154,7 @@ export default function Writing() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.2 }}
-          className="flex flex-wrap gap-3 mb-16"
+          className="flex flex-wrap gap-2 sm:gap-3 mb-10 sm:mb-16"
         >
           {tags.map((tag) => {
             const isActive = activeFilter === tag;
@@ -162,7 +162,7 @@ export default function Writing() {
               <button
                 key={tag}
                 onClick={() => setActiveFilter(tag)}
-                className={`relative px-5 py-2 rounded-full border transition-colors duration-300 ${
+                className={`relative px-4 sm:px-5 py-1.5 sm:py-2 rounded-full border transition-colors duration-300 ${
                   isActive ? "border-mahogany text-white" : "border-mahogany/20 text-mahogany hover:border-mahogany"
                 }`}
               >
@@ -173,7 +173,7 @@ export default function Writing() {
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   />
                 )}
-                <span className="relative z-10 text-sm font-sans font-medium">{tag}</span>
+                <span className="relative z-10 text-xs sm:text-sm font-sans font-medium">{tag}</span>
               </button>
             );
           })}

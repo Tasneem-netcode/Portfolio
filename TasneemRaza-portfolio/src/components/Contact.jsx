@@ -56,7 +56,7 @@ export default function Contact() {
   ];
 
   return (
-    <footer id="contact" className="relative bg-porcelain text-mahogany pt-28 pb-20 md:pb-24 px-6 md:px-12 overflow-hidden flex flex-col min-h-[92vh]">
+    <footer id="contact" className="relative bg-porcelain text-mahogany pt-20 sm:pt-28 pb-16 sm:pb-20 md:pb-24 px-4 sm:px-6 md:px-12 overflow-hidden flex flex-col min-h-[92vh]">
       
       {/* Heavenly Background */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -160,7 +160,7 @@ export default function Contact() {
 
       {/* ──────────────── Central Content ──────────────── */}
       <motion.div 
-        className="relative z-10 w-full max-w-[580px] mx-auto flex flex-col items-center justify-center flex-1 my-16"
+        className="relative z-10 w-full max-w-[580px] mx-auto flex flex-col items-center justify-center flex-1 my-10 sm:my-16"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-5%" }}
@@ -173,7 +173,7 @@ export default function Contact() {
           whileInView="visible"
           viewport={{ once: true }}
           variants={{ visible: { transition: { staggerChildren: 0.15, delayChildren: 0.1 } } }}
-          className="font-serif text-6xl md:text-8xl lg:text-[7.5rem] text-mahogany font-light leading-none mb-6 text-center whitespace-nowrap flex items-baseline justify-center gap-[0.25em]"
+          className="font-serif text-4xl sm:text-6xl md:text-8xl lg:text-[7.5rem] text-mahogany font-light leading-none mb-4 sm:mb-6 text-center flex flex-wrap items-baseline justify-center gap-[0.2em] sm:gap-[0.25em]"
           style={{ textShadow: '0 2px 20px rgba(235,229,224,0.8), 0 4px 40px rgba(235,229,224,0.5)' }}
         >
           <motion.span
@@ -190,7 +190,7 @@ export default function Contact() {
               hidden: { opacity: 0, y: 40, scale: 0.85 },
               visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } }
             }}
-            className="italic text-drift pr-4 inline-block"
+            className="italic text-drift inline-block"
           >
             Connect
           </motion.span>
@@ -202,7 +202,7 @@ export default function Contact() {
           whileInView="visible"
           viewport={{ once: true }}
           variants={{ visible: { transition: { staggerChildren: 0.04, delayChildren: 0.4 } } }}
-          className="text-mahogany/65 text-base md:text-lg text-center mb-12 font-sans font-normal leading-relaxed px-4 max-w-lg flex flex-wrap justify-center"
+          className="text-mahogany/65 text-sm sm:text-base md:text-lg text-center mb-8 sm:mb-12 font-sans font-normal leading-relaxed px-2 sm:px-4 max-w-lg flex flex-wrap justify-center"
         >
           {"Have an idea, opportunity, or just want to talk tech? I'd love to hear from you.".split(" ").map((word, i) => (
             <motion.span
@@ -223,12 +223,12 @@ export default function Contact() {
           ref={formRef}
           variants={fadeUp}
           onSubmit={handleSubmit}
-          className="w-full bg-white/60 rounded-3xl border border-white/70 shadow-[0_8px_40px_rgba(88,51,30,0.08)] p-6 md:p-8 mb-8"
+          className="w-full bg-white/60 rounded-2xl sm:rounded-3xl border border-white/70 shadow-[0_8px_40px_rgba(88,51,30,0.08)] p-5 sm:p-6 md:p-8 mb-6 sm:mb-8"
         >
           {/* Name field */}
-          <div className="relative mb-5">
+          <div className="relative mb-4 sm:mb-5">
             <motion.label 
-              className="block text-[11px] font-sans font-semibold tracking-[0.15em] uppercase mb-2.5"
+              className="block text-[10px] sm:text-[11px] font-sans font-semibold tracking-[0.15em] uppercase mb-2 sm:mb-2.5"
               animate={{ color: formFocused === 'name' ? '#5b331e' : '#7a6b5d' }}
               transition={{ duration: 0.3 }}
             >
@@ -241,14 +241,14 @@ export default function Contact() {
               onFocus={() => setFormFocused('name')}
               onBlur={() => setFormFocused(null)}
               placeholder="e.g. Sarah"
-              className="w-full bg-transparent border-b-[1.5px] border-mahogany/20 focus:border-mahogany/50 text-mahogany text-base md:text-lg font-sans font-light pb-3 pt-1 outline-none placeholder:text-mahogany/25 transition-colors duration-500"
+              className="w-full bg-transparent border-b-[1.5px] border-mahogany/20 focus:border-mahogany/50 text-mahogany text-sm sm:text-base md:text-lg font-sans font-light pb-2.5 sm:pb-3 pt-1 outline-none placeholder:text-mahogany/25 transition-colors duration-500"
             />
           </div>
 
           {/* Message field */}
-          <div className="relative mb-6">
+          <div className="relative mb-5 sm:mb-6">
             <motion.label 
-              className="block text-[11px] font-sans font-semibold tracking-[0.15em] uppercase mb-2.5"
+              className="block text-[10px] sm:text-[11px] font-sans font-semibold tracking-[0.15em] uppercase mb-2 sm:mb-2.5"
               animate={{ color: formFocused === 'message' ? '#5b331e' : '#7a6b5d' }}
               transition={{ duration: 0.3 }}
             >
@@ -261,7 +261,7 @@ export default function Contact() {
               onBlur={() => setFormFocused(null)}
               placeholder="Tell me about your project or idea..."
               rows={3}
-              className="w-full bg-transparent border-b-[1.5px] border-mahogany/20 focus:border-mahogany/50 text-mahogany text-base font-sans font-light pb-3 pt-1 outline-none placeholder:text-mahogany/25 transition-colors duration-500 resize-none leading-relaxed"
+              className="w-full bg-transparent border-b-[1.5px] border-mahogany/20 focus:border-mahogany/50 text-mahogany text-sm sm:text-base font-sans font-light pb-2.5 sm:pb-3 pt-1 outline-none placeholder:text-mahogany/25 transition-colors duration-500 resize-none leading-relaxed"
             />
           </div>
 
@@ -281,28 +281,28 @@ export default function Contact() {
               className="absolute top-1/2 left-[-50%] right-[-50%] h-[30px] -translate-y-1/2 z-0"
               style={{ background: '#E3D5B5', filter: 'blur(10px)', opacity: 0.9 }}
             />
-            <div className="relative z-10 flex items-center justify-center gap-3 bg-[#58331E] text-[#E8E5E0] rounded-full py-4 px-8 font-sans text-[15px] font-medium tracking-wide">
+            <div className="relative z-10 flex items-center justify-center gap-2 sm:gap-3 bg-[#58331E] text-[#E8E5E0] rounded-full py-3 sm:py-4 px-6 sm:px-8 font-sans text-[13px] sm:text-[15px] font-medium tracking-wide">
               Start a Project
-              <ArrowUpRight size={18} strokeWidth={2} className="transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ArrowUpRight size={16} strokeWidth={2} className="transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </div>
           </motion.button>
         </motion.form>
 
         {/* ──── OR divider ──── */}
-        <motion.div variants={fadeUp} className="flex items-center gap-4 w-full mb-8 px-4">
+        <motion.div variants={fadeUp} className="flex items-center gap-3 sm:gap-4 w-full mb-6 sm:mb-8 px-2 sm:px-4">
           <div className="flex-1 h-px bg-mahogany/15" />
-          <span className="text-[12px] font-sans font-semibold tracking-[0.2em] uppercase text-mahogany/50">or reach out directly</span>
+          <span className="text-[10px] sm:text-[12px] font-sans font-semibold tracking-[0.15em] sm:tracking-[0.2em] uppercase text-mahogany/50">or reach out directly</span>
           <div className="flex-1 h-px bg-mahogany/15" />
         </motion.div>
 
         {/* ──── Email row ──── */}
         <motion.div 
           variants={fadeUp}
-          className="flex items-center justify-center gap-3 mb-7"
+          className="flex items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-7"
         >
           <a 
             href="mailto:tasneem78899@gmail.com" 
-            className="relative text-lg md:text-xl text-mahogany font-sans font-medium transition-colors duration-300 hover:text-mahogany/70 group/email"
+            className="relative text-sm sm:text-lg md:text-xl text-mahogany font-sans font-medium transition-colors duration-300 hover:text-mahogany/70 group/email break-all sm:break-normal"
           >
             tasneem78899@gmail.com
             <span className="absolute bottom-[-2px] left-0 w-full h-[1px] bg-mahogany/30 origin-left scale-x-100 group-hover/email:scale-x-0 transition-transform duration-500 ease-[0.16,1,0.3,1]" />
@@ -312,13 +312,13 @@ export default function Contact() {
           {/* Copy button */}
           <button 
             onClick={handleCopy}
-            className="relative p-2 rounded-full hover:bg-mahogany/5 transition-all duration-300"
+            className="relative p-1.5 sm:p-2 rounded-full hover:bg-mahogany/5 transition-all duration-300 shrink-0"
             title="Copy email"
           >
             <motion.div initial={false} animate={{ scale: copied ? [1, 1.3, 1] : 1 }} transition={{ duration: 0.3 }}>
               {copied 
-                ? <Check size={15} className="text-green-600" /> 
-                : <Copy size={15} className="text-mahogany/40 hover:text-mahogany/70 transition-colors duration-300" />
+                ? <Check size={14} className="text-green-600" /> 
+                : <Copy size={14} className="text-mahogany/40 hover:text-mahogany/70 transition-colors duration-300" />
               }
             </motion.div>
             <AnimatePresence>
@@ -339,18 +339,18 @@ export default function Contact() {
         {/* ──── Trust badges ──── */}
         <motion.div 
           variants={fadeUp}
-          className="flex flex-col items-center gap-2 mb-9"
+          className="flex flex-col items-center gap-1.5 sm:gap-2 mb-7 sm:mb-9 px-4"
         >
-          <span className="text-mahogany/60 text-[13px] font-sans font-semibold tracking-[0.14em] uppercase">
+          <span className="text-mahogany/60 text-[11px] sm:text-[13px] font-sans font-semibold tracking-[0.1em] sm:tracking-[0.14em] uppercase text-center">
             Open to freelance & internship opportunities
           </span>
-          <span className="text-mahogany/45 text-[11px] font-sans font-medium tracking-[0.1em] uppercase">
+          <span className="text-mahogany/45 text-[10px] sm:text-[11px] font-sans font-medium tracking-[0.08em] sm:tracking-[0.1em] uppercase text-center">
             Typically responds within 24 hours
           </span>
         </motion.div>
 
         {/* ──── Social Icons ──── */}
-        <motion.div variants={fadeUp} className="flex items-center gap-4">
+        <motion.div variants={fadeUp} className="flex items-center gap-3 sm:gap-4">
           {socials.map((social) => (
             <motion.a 
               key={social.label}
@@ -358,7 +358,7 @@ export default function Contact() {
               target="_blank" 
               rel="noreferrer" 
               aria-label={social.label}
-              className="relative p-4 rounded-full bg-white/55 border border-white/60 text-mahogany/80 hover:text-mahogany transition-colors duration-300"
+              className="relative p-3 sm:p-4 rounded-full bg-white/55 border border-white/60 text-mahogany/80 hover:text-mahogany transition-colors duration-300"
               whileHover={{ 
                 scale: 1.15, 
                 boxShadow: '0 6px 24px rgba(88,51,30,0.1)',
@@ -376,7 +376,7 @@ export default function Contact() {
       </motion.div>
 
       {/* ──────────────── Footer Row ──────────────── */}
-      <div className="relative z-10 w-full max-w-[1400px] mx-auto flex flex-col md:flex-row items-center justify-between text-mahogany/55 text-[13px] font-sans tracking-wide pt-8 mt-auto gap-4">
+      <div className="relative z-10 w-full max-w-[1400px] mx-auto flex flex-col sm:flex-row items-center justify-between text-mahogany/55 text-[11px] sm:text-[13px] font-sans tracking-wide pt-6 sm:pt-8 mt-auto gap-2 sm:gap-4">
         <p>© {new Date().getFullYear()} Tasneem Raza</p>
         <p className="font-medium text-mahogany/65">Based in India, working globally.</p>
         <p>All Rights Reserved</p>

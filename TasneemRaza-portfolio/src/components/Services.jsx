@@ -91,7 +91,7 @@ export default function Services() {
   };
 
   return (
-    <section className="min-h-screen pt-20 px-6 md:px-12 pb-24 flex flex-col items-center bg-porcelain overflow-hidden relative">
+    <section className="min-h-screen pt-16 sm:pt-20 px-4 sm:px-6 md:px-12 pb-16 sm:pb-24 flex flex-col items-center bg-porcelain overflow-hidden relative">
       
       {/* Ethereal background */}
       <div className="absolute inset-0 z-0 pointer-events-none">
@@ -100,7 +100,7 @@ export default function Services() {
         <div className="absolute top-[40%] left-[30%] w-[40%] h-[30%] bg-white rounded-full blur-[100px] opacity-30" />
       </div>
 
-      <div className="w-full max-w-[1400px] mx-auto relative z-10 flex flex-col mt-8 md:mt-12">
+      <div className="w-full max-w-[1400px] mx-auto relative z-10 flex flex-col mt-6 sm:mt-8 md:mt-12">
         
         {/* --- TOP HEADER --- */}
         <motion.div 
@@ -108,11 +108,11 @@ export default function Services() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full lg:w-1/2 flex flex-col mb-16"
+          className="w-full lg:w-1/2 flex flex-col mb-10 sm:mb-16"
         >
-          <div className="flex items-center gap-3 mb-6">
+          <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
             <div className="w-1.5 h-1.5 rounded-full bg-mahogany"></div>
-            <span className="font-sans text-sm tracking-widest uppercase text-mahogany/60">Services</span>
+            <span className="font-sans text-xs sm:text-sm tracking-widest uppercase text-mahogany/60">Services</span>
           </div>
 
           <motion.h1 
@@ -120,7 +120,7 @@ export default function Services() {
             whileInView="visible"
             viewport={{ once: true, margin: "-10%" }}
             variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
-            className="text-4xl md:text-5xl lg:text-[4rem] font-serif text-mahogany font-medium tracking-tight mb-6 leading-[1.1] flex flex-wrap"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-[4rem] font-serif text-mahogany font-medium tracking-tight mb-4 sm:mb-6 leading-[1.1] flex flex-wrap"
           >
             {"What I".split(" ").map((word, i) => (
               <motion.span 
@@ -144,11 +144,11 @@ export default function Services() {
               Offer
             </motion.span>
           </motion.h1>
-          <RevealText text="Whether you're a startup, a local brand, or a recruiter — here's how I can help bring your vision to life natively in the browser." className="text-mahogany/55 text-base md:text-lg font-sans font-light max-w-lg leading-relaxed mt-2" stagger={0.02} />
+          <RevealText text="Whether you're a startup, a local brand, or a recruiter — here's how I can help bring your vision to life natively in the browser." className="text-mahogany/55 text-sm sm:text-base md:text-lg font-sans font-light max-w-lg leading-relaxed mt-2" stagger={0.02} />
         </motion.div>
 
         {/* --- SPLIT LAYOUT: CLEAN PANELS + FRAMED IMAGE STACK --- */}
-        <div className="w-full flex flex-col lg:flex-row items-start gap-10 lg:gap-16">
+        <div className="w-full flex flex-col lg:flex-row items-start gap-8 sm:gap-10 lg:gap-16">
           
           {/* LEFT: Clean accordion panels (inspired by reference) */}
           <div className="w-full lg:w-[50%] flex flex-col gap-0">
@@ -179,14 +179,14 @@ export default function Services() {
                   >
                     {/* Top separator line */}
                     {index === 0 && (
-                      <div className="absolute top-0 left-6 right-6 h-px bg-mahogany/8" />
+                      <div className="absolute top-0 left-4 sm:left-6 right-4 sm:right-6 h-px bg-mahogany/8" />
                     )}
 
                     <button 
                       onClick={() => handleAccordionClick(index)}
-                      className="w-full flex items-center justify-between text-left py-7 px-7 cursor-pointer group"
+                      className="w-full flex items-center justify-between text-left py-5 sm:py-7 px-4 sm:px-7 cursor-pointer group"
                     >
-                      <h3 className="font-sans text-xl md:text-2xl text-mahogany font-medium tracking-tight leading-snug pr-8 group-hover:text-mahogany/80 transition-colors duration-300">
+                      <h3 className="font-sans text-lg sm:text-xl md:text-2xl text-mahogany font-medium tracking-tight leading-snug pr-4 sm:pr-8 group-hover:text-mahogany/80 transition-colors duration-300">
                         {service.title}
                       </h3>
 
@@ -197,8 +197,8 @@ export default function Services() {
                         transition={{ duration: 0.2 }}
                       >
                         {isOpen 
-                          ? <Minus size={22} strokeWidth={1.5} /> 
-                          : <Plus size={22} strokeWidth={1.5} />
+                          ? <Minus size={20} strokeWidth={1.5} /> 
+                          : <Plus size={20} strokeWidth={1.5} />
                         }
                       </motion.span>
                     </button>
@@ -216,25 +216,25 @@ export default function Services() {
                           className="overflow-hidden"
                         >
                           <motion.div 
-                            className="px-7 pb-8 pt-0"
+                            className="px-4 sm:px-7 pb-6 sm:pb-8 pt-0"
                             initial={{ y: 8 }}
                             animate={{ y: 0 }}
                             transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
                           >
-                            <p className="font-sans text-mahogany/55 text-[15px] md:text-base font-light leading-relaxed mb-5 max-w-md">
+                            <p className="font-sans text-mahogany/55 text-[13px] sm:text-[15px] md:text-base font-light leading-relaxed mb-4 sm:mb-5 max-w-md">
                               {service.desc}
                             </p>
                             
-                            <div className="flex flex-wrap items-center gap-3 justify-between">
+                            <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-2 sm:gap-3 sm:justify-between">
                               {/* Pill-style tags */}
-                              <div className="flex flex-wrap gap-2">
+                              <div className="flex flex-wrap gap-1.5 sm:gap-2">
                                 {service.tags.map(tag => (
-                                  <span key={tag} className="px-3.5 py-1.5 bg-white/50 text-mahogany/65 font-sans font-medium text-[10px] uppercase tracking-[0.12em] rounded-full border border-mahogany/8 hover:border-mahogany/15 hover:bg-white/70 transition-all duration-300">
+                                  <span key={tag} className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-white/50 text-mahogany/65 font-sans font-medium text-[9px] sm:text-[10px] uppercase tracking-[0.12em] rounded-full border border-mahogany/8 hover:border-mahogany/15 hover:bg-white/70 transition-all duration-300">
                                     {tag}
                                   </span>
                                 ))}
                               </div>
-                              <div className="font-sans text-mahogany/40 text-xs font-medium tracking-wider uppercase mt-2 sm:mt-0">
+                              <div className="font-sans text-mahogany/40 text-[10px] sm:text-xs font-medium tracking-wider uppercase mt-1 sm:mt-0">
                                 Starting at: <span className="text-mahogany font-semibold">{service.price}</span>
                               </div>
                             </div>
@@ -244,7 +244,7 @@ export default function Services() {
                     </AnimatePresence>
 
                     {/* Bottom separator line */}
-                    <div className="absolute bottom-0 left-6 right-6 h-px bg-mahogany/8" />
+                    <div className="absolute bottom-0 left-4 sm:left-6 right-4 sm:right-6 h-px bg-mahogany/8" />
                   </motion.div>
                 </motion.div>
               );
@@ -257,7 +257,7 @@ export default function Services() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-            className="w-full lg:w-[50%] relative min-h-[420px] md:min-h-[520px] flex items-center justify-center mt-8 lg:mt-0"
+            className="w-full lg:w-[50%] relative min-h-[300px] sm:min-h-[420px] md:min-h-[520px] flex items-center justify-center mt-4 sm:mt-8 lg:mt-0"
           >
             {/* Bracket-corner frames behind the images (reference style) */}
             {rightImages.map((_, i) => {
@@ -282,13 +282,13 @@ export default function Services() {
                     ease: [0.25, 0.46, 0.45, 0.94],
                     delay: 0.05,
                   }}
-                  className="absolute inset-0 m-auto w-[85%] lg:w-[92%] aspect-[4/3] pointer-events-none z-0"
+                  className="absolute inset-0 m-auto w-[90%] sm:w-[85%] lg:w-[92%] aspect-[4/3] pointer-events-none z-0"
                 >
                   {/* Corner brackets */}
-                  <div className="absolute -top-2 -left-2 w-6 h-6 border-t-[1.5px] border-l-[1.5px] border-mahogany/20" />
-                  <div className="absolute -top-2 -right-2 w-6 h-6 border-t-[1.5px] border-r-[1.5px] border-mahogany/20" />
-                  <div className="absolute -bottom-2 -left-2 w-6 h-6 border-b-[1.5px] border-l-[1.5px] border-mahogany/20" />
-                  <div className="absolute -bottom-2 -right-2 w-6 h-6 border-b-[1.5px] border-r-[1.5px] border-mahogany/20" />
+                  <div className="absolute -top-2 -left-2 w-4 sm:w-6 h-4 sm:h-6 border-t-[1.5px] border-l-[1.5px] border-mahogany/20" />
+                  <div className="absolute -top-2 -right-2 w-4 sm:w-6 h-4 sm:h-6 border-t-[1.5px] border-r-[1.5px] border-mahogany/20" />
+                  <div className="absolute -bottom-2 -left-2 w-4 sm:w-6 h-4 sm:h-6 border-b-[1.5px] border-l-[1.5px] border-mahogany/20" />
+                  <div className="absolute -bottom-2 -right-2 w-4 sm:w-6 h-4 sm:h-6 border-b-[1.5px] border-r-[1.5px] border-mahogany/20" />
                   
                   {/* Thin border */}
                   <div className="absolute inset-0 border border-mahogany/8 rounded-sm" />
@@ -327,9 +327,9 @@ export default function Services() {
                     delay: 0.0,
                   }}
                   style={{ boxShadow: dropShadow }}
-                  className="absolute inset-0 m-auto w-[85%] lg:w-[92%] aspect-[4/3] bg-white/60 rounded-2xl md:rounded-3xl border border-white/60 p-2.5 md:p-3 overflow-hidden origin-center"
+                  className="absolute inset-0 m-auto w-[90%] sm:w-[85%] lg:w-[92%] aspect-[4/3] bg-white/60 rounded-xl sm:rounded-2xl md:rounded-3xl border border-white/60 p-2 sm:p-2.5 md:p-3 overflow-hidden origin-center"
                 >
-                  <div className="w-full h-full relative rounded-xl md:rounded-2xl overflow-hidden bg-[#E8E5E0] premium-img-wrapper">
+                  <div className="w-full h-full relative rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden bg-[#E8E5E0] premium-img-wrapper">
                     <img 
                       src={img} 
                       alt="Portfolio web sample" 

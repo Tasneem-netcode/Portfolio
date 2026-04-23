@@ -65,8 +65,8 @@ function App() {
       <SmoothScroll>
         <Background />
         {/* Global Glassmorphic Vignettes */}
-        <div className="fixed top-0 left-0 right-0 h-16 md:h-24 backdrop-blur-[12px] bg-porcelain/20 z-[45] pointer-events-none mask-gradient-bottom"></div>
-        <div className="fixed bottom-0 left-0 right-0 h-16 md:h-24 backdrop-blur-[12px] bg-porcelain/20 z-[45] pointer-events-none mask-gradient-top"></div>
+        <div className="fixed top-0 left-0 right-0 h-10 sm:h-16 md:h-24 backdrop-blur-[12px] bg-porcelain/20 z-[45] pointer-events-none mask-gradient-bottom"></div>
+        <div className="fixed bottom-0 left-0 right-0 h-10 sm:h-16 md:h-24 backdrop-blur-[12px] bg-porcelain/20 z-[45] pointer-events-none mask-gradient-top"></div>
         <Navbar />
         <AnimatedRoutes />
         <Contact />
