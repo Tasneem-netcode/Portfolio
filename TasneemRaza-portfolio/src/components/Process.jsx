@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-const RevealText = ({ text, className, stagger = 0.03 }) => {
+const RevealText = ({ text, className, stagger = 0.02 }) => {
   return (
     <motion.div 
       initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }}
@@ -11,8 +11,8 @@ const RevealText = ({ text, className, stagger = 0.03 }) => {
         <motion.span 
           key={i}
           variants={{
-             hidden: { opacity: 0, y: 15 },
-             visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+             hidden: { opacity: 0, y: 12 },
+             visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } }
           }}
           className="inline-block mr-[0.25em]"
         >
@@ -58,14 +58,20 @@ const stages = [
   }
 ];
 
+/* Shared variant */
+const wordVariant = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }
+};
+
 export default function Process() {
   return (
     <section className="relative w-full bg-porcelain pt-24 sm:pt-32 pb-20 sm:pb-32 overflow-hidden min-h-screen">
       
-      {/* Heavenly Background Touches */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-50">
-        <div className="absolute top-[10%] left-[-10%] w-[40%] h-[40%] bg-white rounded-full blur-[100px]" />
-        <div className="absolute bottom-[20%] right-[-5%] w-[30%] h-[50%] bg-[#E3D5B5] rounded-full blur-[120px] opacity-40" />
+      {/* Heavenly Background Touches (High Performance) */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-50">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_10%_10%,rgba(255,255,255,1)_0%,transparent_40%)] opacity-80" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_90%_80%,rgba(227,213,181,0.5)_0%,transparent_40%)] opacity-40" />
       </div>
 
       <div className="w-full max-w-[1600px] mx-auto relative z-10 flex flex-col">
@@ -75,14 +81,11 @@ export default function Process() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-10%" }}
-          variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
+          variants={{ visible: { transition: { staggerChildren: 0.06 } } }}
           className="w-full flex flex-col items-center justify-center text-center px-4 sm:px-6 mb-12 sm:mb-16 md:mb-24"
         >
           <motion.span 
-            variants={{
-               hidden: { opacity: 0, y: 20 },
-               visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-            }}
+            variants={wordVariant}
             className="font-sans font-light tracking-[0.2em] text-drift uppercase text-[10px] sm:text-xs md:text-sm mb-4 sm:mb-6 block"
           >
             Process & Methodology
@@ -91,20 +94,14 @@ export default function Process() {
             {"How I".split(" ").map((word, i) => (
               <motion.span 
                 key={`how-${i}`} 
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-                }}
+                variants={wordVariant}
                 className="inline-block mr-[0.25em]"
               >
                 {word}
               </motion.span>
             ))}
             <motion.span 
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-              }}
+              variants={wordVariant}
               className="text-drift italic inline-block"
             >
               Think
@@ -113,29 +110,27 @@ export default function Process() {
         </motion.div>
 
         {/* --- DESKTOP: Absolute Scattered Layout --- */}
-        {/* We use a very tall container (220vh) to ensure images never overlap vertically */}
         <div className="hidden md:block relative w-full h-[220vh]">
           
-          {/* Edge Aesthetic Details (placed carefully away from stages) */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.8 }} className="absolute top-[2%] right-[5%] max-w-[120px] font-sans font-light text-[11px] tracking-widest uppercase text-drift leading-[1.6] text-right">
-            DIGGING DEEP <br/>INTO THE<br/> PROBLEM
+          {/* Edge Aesthetic Details */}
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 }} className="absolute top-[2%] right-[5%] max-w-[120px] font-sans font-light text-[11px] tracking-widest uppercase text-drift leading-[1.6] text-right">
+            DIGGING DEEP <br/> INTO THE<br/> PROBLEM
           </motion.div>
           
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 1 }} className="absolute top-[40%] left-[5%] max-w-[120px] font-sans font-light text-[11px] tracking-widest uppercase text-drift leading-[1.6]">
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.4 }} className="absolute top-[40%] left-[5%] max-w-[120px] font-sans font-light text-[11px] tracking-widest uppercase text-drift leading-[1.6]">
             PERFECT <br/> BALANCE / <br/> 2026'
           </motion.div>
           
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 1.2 }} className="absolute bottom-[2%] left-[5%] font-sans font-light text-[11px] tracking-widest uppercase text-drift leading-[1.6]">
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.5 }} className="absolute bottom-[2%] left-[5%] font-sans font-light text-[11px] tracking-widest uppercase text-drift leading-[1.6]">
             C1 / 26'
           </motion.div>
-          
-          
 
           {/* Center decorative crosshair */}
           <motion.div 
-            initial={{ opacity: 0, scale: 0.8 }} 
-            animate={{ opacity: 1, scale: 1 }} 
-            transition={{ duration: 1.5, delay: 1 }}
+            initial={{ opacity: 0 }} 
+            whileInView={{ opacity: 1 }} 
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
             className="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full border border-drift/20 flex flex-col items-center justify-center pointer-events-none z-10"
           >
             <span className="text-mahogany/40 text-2xl font-light leading-none">+</span>
@@ -160,7 +155,7 @@ export default function Process() {
                 initial={{ pathLength: 0, opacity: 0 }}
                 whileInView={{ pathLength: 1, opacity: 1 }}
                 viewport={{ once: true, margin: "-10%" }}
-                transition={{ duration: 2.2, ease: "easeInOut", delay: 0.4 }}
+                transition={{ duration: 1.5, ease: "easeInOut", delay: 0.2 }}
                 d="M 280 80 C 500 90, 500 300, 720 300"
                 stroke="url(#heaven-line)"
                 strokeWidth="1.5"
@@ -173,7 +168,7 @@ export default function Process() {
                 initial={{ pathLength: 0, opacity: 0 }}
                 whileInView={{ pathLength: 1, opacity: 1 }}
                 viewport={{ once: true, margin: "-10%" }}
-                transition={{ duration: 2.2, ease: "easeInOut", delay: 1 }}
+                transition={{ duration: 1.5, ease: "easeInOut", delay: 0.5 }}
                 d="M 720 330 C 500 330, 500 570, 280 570"
                 stroke="url(#heaven-line)"
                 strokeWidth="1.5"
@@ -186,7 +181,7 @@ export default function Process() {
                 initial={{ pathLength: 0, opacity: 0 }}
                 whileInView={{ pathLength: 1, opacity: 1 }}
                 viewport={{ once: true, margin: "-10%" }}
-                transition={{ duration: 2.2, ease: "easeInOut", delay: 1.6 }}
+                transition={{ duration: 1.5, ease: "easeInOut", delay: 0.8 }}
                 d="M 280 600 C 500 600, 500 820, 720 820"
                 stroke="url(#heaven-line)"
                 strokeWidth="1.5"
@@ -199,10 +194,10 @@ export default function Process() {
           {stages.map((stage, i) => (
             <motion.div
               key={stage.id}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8, delay: i * 0.15 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, delay: i * 0.1 }}
               className="absolute flex items-center gap-6 lg:gap-8 xl:gap-12 group"
               style={{
                 top: stage.pos.top,
@@ -214,27 +209,25 @@ export default function Process() {
                 <>
                   <div className="w-[180px] lg:w-[220px] xl:w-[280px] aspect-[4/5] bg-white/40 p-2 lg:p-3 shadow-[0_12px_40px_rgba(88,51,30,0.06)] border border-white/60 flex flex-col relative">
                     <div className="w-full h-full overflow-hidden premium-img-wrapper">
-                      <img src={stage.img} alt={stage.title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-[1.03]" />
+                      <img src={stage.img} alt={stage.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" loading="lazy" />
                     </div>
                   </div>
                   <div className="max-w-[200px] lg:max-w-[260px] xl:max-w-[320px]">
                     <span className="font-serif italic text-2xl lg:text-3xl xl:text-4xl text-drift/40 mb-2 lg:mb-3 block">({stage.id})</span>
-                    <RevealText text={stage.title} className="font-serif text-3xl lg:text-4xl xl:text-5xl text-mahogany mb-3 lg:mb-4" stagger={0.08} />
-                    {/* Darker, clearer text font-size */}
-                    <RevealText text={stage.desc} className="font-sans font-light text-mahogany/80 text-[14px] lg:text-[16px] xl:text-[18px] leading-[1.6]" stagger={0.02} />
+                    <RevealText text={stage.title} className="font-serif text-3xl lg:text-4xl xl:text-5xl text-mahogany mb-3 lg:mb-4" stagger={0.06} />
+                    <RevealText text={stage.desc} className="font-sans font-light text-mahogany/80 text-[14px] lg:text-[16px] xl:text-[18px] leading-[1.6]" stagger={0.015} />
                   </div>
                 </>
               ) : (
                 <>
                   <div className="max-w-[200px] lg:max-w-[260px] xl:max-w-[320px] text-right">
                     <span className="font-serif italic text-2xl lg:text-3xl xl:text-4xl text-drift/40 mb-2 lg:mb-3 block">({stage.id})</span>
-                    <RevealText text={stage.title} className="font-serif text-3xl lg:text-4xl xl:text-5xl text-mahogany mb-3 lg:mb-4 justify-end" stagger={0.08} />
-                    {/* Darker, clearer text font-size */}
-                    <RevealText text={stage.desc} className="font-sans font-light text-mahogany/80 text-[14px] lg:text-[16px] xl:text-[18px] leading-[1.6] text-right justify-end" stagger={0.02} />
+                    <RevealText text={stage.title} className="font-serif text-3xl lg:text-4xl xl:text-5xl text-mahogany mb-3 lg:mb-4 justify-end" stagger={0.06} />
+                    <RevealText text={stage.desc} className="font-sans font-light text-mahogany/80 text-[14px] lg:text-[16px] xl:text-[18px] leading-[1.6] text-right justify-end" stagger={0.015} />
                   </div>
                   <div className="w-[180px] lg:w-[220px] xl:w-[280px] aspect-[4/5] bg-white/40 p-2 lg:p-3 shadow-[0_12px_40px_rgba(88,51,30,0.06)] border border-white/60 flex flex-col relative">
                     <div className="w-full h-full overflow-hidden premium-img-wrapper">
-                      <img src={stage.img} alt={stage.title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-[1.03]" />
+                      <img src={stage.img} alt={stage.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" loading="lazy" />
                     </div>
                   </div>
                 </>
@@ -248,21 +241,21 @@ export default function Process() {
           {stages.map((stage, i) => (
             <motion.div
               key={stage.id}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.5 }}
               className="flex flex-col gap-4 sm:gap-6"
             >
               <div className="w-full aspect-[4/3] sm:aspect-[4/5] bg-white/40 p-2 sm:p-3 shadow-[0_12px_40px_rgba(88,51,30,0.06)] border border-white/60 flex flex-col relative">
                 <div className="w-full h-full overflow-hidden premium-img-wrapper">
-                  <img src={stage.img} alt={stage.title} className="w-full h-full object-cover" />
+                  <img src={stage.img} alt={stage.title} className="w-full h-full object-cover" loading="lazy" />
                 </div>
               </div>
               <div className="max-w-full">
                 <span className="font-serif italic text-2xl sm:text-3xl text-drift/50 mb-1.5 sm:mb-2 block">({stage.id})</span>
-                <RevealText text={stage.title} className="font-serif text-3xl sm:text-4xl text-mahogany mb-2 sm:mb-3" stagger={0.08} />
-                <RevealText text={stage.desc} className="font-sans font-light text-mahogany/80 text-[14px] sm:text-[16px] leading-[1.6]" stagger={0.02} />
+                <RevealText text={stage.title} className="font-serif text-3xl sm:text-4xl text-mahogany mb-2 sm:mb-3" stagger={0.06} />
+                <RevealText text={stage.desc} className="font-sans font-light text-mahogany/80 text-[14px] sm:text-[16px] leading-[1.6]" stagger={0.015} />
               </div>
             </motion.div>
           ))}

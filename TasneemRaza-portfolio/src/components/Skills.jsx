@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const skillsData = [
@@ -21,8 +21,47 @@ const skillsData = [
   { id: 17, name: 'Machine Learning', desc: 'AI Models', use: 'Training and deploying predictive models', img: 'skill17MachineLearning.png' },
 ];
 
+/* Shared variants — allocated once */
+const wordVariant = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }
+};
+
+/* Memoized skill card to prevent unnecessary re-renders */
+const SkillCard = memo(function SkillCard({ skill, uniqueId, isHovered, onEnter, onLeave, isMobile }) {
+  return (
+    <div
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+      className="group flex-shrink-0 relative w-[200px] md:w-[320px] h-[260px] md:h-[400px]"
+    >
+      <div className={`flex flex-col items-center justify-center p-4 md:p-8 bg-[#fdfaf6] rounded-[2rem] sm:rounded-[2.5rem] w-full h-full border border-white/60 shadow-[0_20px_40px_rgba(88,51,30,0.06)] transition-transform duration-300 cursor-pointer ${isHovered ? 'scale-[1.02]' : ''}`}>
+        
+        <div className={`w-24 h-24 md:w-48 md:h-48 rounded-full overflow-hidden mb-4 md:mb-8 flex items-center justify-center transition-transform duration-300 ease-out ${isHovered ? '-translate-y-2' : ''}`}>
+          <img 
+            src={`/${skill.img}`} 
+            alt={skill.name} 
+            className="w-full h-full object-cover rounded-full pointer-events-none premium-img-wrapper" 
+            draggable={false}
+            loading="lazy" 
+          />
+        </div>
+        
+        <span className={`font-serif italic text-mahogany text-xl md:text-3xl font-medium tracking-wide text-center`}>
+          {skill.name}
+        </span>
+
+        <div className={`h-[32px] md:h-[48px] flex items-center justify-center w-full mt-2 md:mt-3`}>
+          <span className={`font-sans ${isHovered ? 'font-bold text-mahogany/80' : 'font-medium text-drift tracking-widest uppercase'} text-[11px] md:text-sm text-center block transition-all duration-200 px-2`}>
+            {isHovered ? skill.use : skill.desc}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+});
+
 export default function Skills() {
-  const containerRef = useRef(null);
   const [hoveredCard, setHoveredCard] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const doubledSkills = [...skillsData, ...skillsData];
@@ -33,13 +72,6 @@ export default function Skills() {
     window.addEventListener('resize', check);
     return () => window.removeEventListener('resize', check);
   }, []);
-
-  // Responsive carousel parameters
-  const cardWidth = isMobile ? 160 : 280;
-  const cardHeight = isMobile ? 220 : 380;
-  const radius = isMobile ? 1200 : 2000;
-  const perspectiveZ = isMobile ? 500 : 800;
-  const imgSize = isMobile ? 'w-20 h-20' : 'w-40 h-40 md:w-48 md:h-48';
 
   return (
     <section id="skills" className="relative w-full bg-porcelain pt-16 pb-16 sm:pt-24 sm:pb-24 md:pt-36 md:pb-32 z-20 font-serif overflow-hidden flex flex-col justify-start">
@@ -57,17 +89,14 @@ export default function Skills() {
           whileInView="visible"
           viewport={{ once: true, margin: "-10%" }}
           variants={{
-            visible: { transition: { staggerChildren: 0.08 } }
+            visible: { transition: { staggerChildren: 0.06 } }
           }}
           className="font-serif text-3xl sm:text-5xl md:text-7xl lg:text-[6rem] text-mahogany font-light leading-none"
         >
           {"Craft &".split(" ").map((word, i) => (
             <motion.span 
               key={`skill-${i}`} 
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-              }}
+              variants={wordVariant}
               className="inline-block mr-[0.25em]"
             >
               {word}
@@ -75,10 +104,7 @@ export default function Skills() {
           ))}
           <br className="md:hidden" />
           <motion.span 
-            variants={{
-              hidden: { opacity: 0, y: 20 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-            }}
+            variants={wordVariant}
             className="italic text-drift pr-4 inline-block"
           >
             Capabilities
@@ -86,97 +112,35 @@ export default function Skills() {
         </motion.h2>
       </div>
 
-      {/* ──── 3D Curved Carousel (All Screens) ──── */}
-      <div 
-        className="relative z-10 w-full overflow-hidden py-12 sm:py-24 md:py-32 flex items-center justify-center"
-        style={{ perspective: '1000px' }}
-      >
+      {/* ──── Simple 2D Infinite Marquee ──── */}
+      <div className="relative z-10 w-full overflow-hidden py-4 sm:py-8 md:py-12 flex items-center justify-center">
         
-        {/* Cloudy fade: Left */}
-        <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 md:w-56 lg:w-[22rem] z-30 pointer-events-none bg-gradient-to-r from-[#ebe5e0] via-[#ebe5e0]/80 to-transparent" />
-        {/* Cloudy fade: Right */}
-        <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 md:w-56 lg:w-[22rem] z-30 pointer-events-none bg-gradient-to-l from-[#ebe5e0] via-[#ebe5e0]/80 to-transparent" />
+        {/* Soft edge fades */}
+        <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 md:w-56 lg:w-[22rem] z-30 pointer-events-none bg-gradient-to-r from-porcelain via-porcelain/80 to-transparent" />
+        <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 md:w-56 lg:w-[22rem] z-30 pointer-events-none bg-gradient-to-l from-porcelain via-porcelain/80 to-transparent" />
 
-        {/* 3D Rotator */}
-        <div style={{ transform: `translateZ(${perspectiveZ}px)`, transformStyle: 'preserve-3d' }} className="mt-6 sm:mt-12 md:mt-16">
+        <div className="marquee-track relative z-10 w-full">
           <div 
-           className="relative flex items-center justify-center"
-           style={{
-              width: `${cardWidth}px`,
-              transformStyle: 'preserve-3d',
-              animation: `spin-carousel ${isMobile ? '80s' : '120s'} linear infinite`,
-              animationPlayState: hoveredCard ? 'paused' : 'running',
+            className="flex w-max gap-4 sm:gap-6 md:gap-10 px-4 sm:px-6 md:px-10"
+            style={{
+              animation: `marquee-primary ${isMobile ? '30s' : '60s'} linear infinite`,
               willChange: 'transform'
             }}
-        >
-          {doubledSkills.map((skill, i) => {
-            const uniqueId = `${skill.id}-${i}`;
-            const isHovered = hoveredCard === uniqueId;
-            
-            const angle = i * (360 / doubledSkills.length);
-
-            return (
-              <div
-                key={uniqueId}
-                onMouseEnter={() => setHoveredCard(uniqueId)}
-                onMouseLeave={() => setHoveredCard(null)}
-                className="absolute top-1/2 left-1/2"
-                style={{
-                  width: `${cardWidth}px`,
-                  height: `${cardHeight}px`,
-                  marginTop: `${-cardHeight / 2}px`,
-                  marginLeft: `${-cardWidth / 2}px`,
-                  transform: `rotateY(${angle}deg) translateZ(${-radius}px)`,
-                  backfaceVisibility: 'hidden',
-                  WebkitBackfaceVisibility: 'hidden',
-                  transformStyle: 'preserve-3d'
-                }}
-              >
-                <div className={`group relative flex flex-col items-center justify-center ${isMobile ? 'p-3' : 'p-6'} bg-[#fdfaf6] rounded-[2rem] sm:rounded-[2.5rem] w-full h-full border border-white/60 shadow-[0_20px_40px_rgba(88,51,30,0.06)] transition-all duration-300 cursor-pointer`}>
-                  
-                  <div className={`${imgSize} rounded-full overflow-hidden ${isMobile ? 'mb-3' : 'mb-6'} flex items-center justify-center transform transition-transform duration-500 ease-[0.16,1,0.3,1] ${isHovered ? '-translate-y-2 scale-105' : ''}`}>
-                    <img 
-                      src={`/${skill.img}`} 
-                      alt={skill.name} 
-                      className="w-full h-full object-cover rounded-full pointer-events-none" 
-                      draggable={false}
-                      loading="lazy" 
-                    />
-                  </div>
-                  
-                  <span className={`font-serif italic text-mahogany ${isMobile ? 'text-lg' : 'text-3xl'} font-medium tracking-wide text-center`}>
-                    {skill.name}
-                  </span>
-
-                  <div className={`${isMobile ? 'h-[24px]' : 'h-[40px]'} flex items-center justify-center w-full mt-1 sm:mt-2`}>
-                    <AnimatePresence mode="wait">
-                      {!isHovered ? (
-                        <motion.span 
-                          key="desc"
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
-                          className={`font-sans font-medium text-drift ${isMobile ? 'text-[9px]' : 'text-sm md:text-base'} tracking-widest uppercase text-center block`}
-                        >
-                          {skill.desc}
-                        </motion.span>
-                      ) : (
-                        <motion.span 
-                          key="use"
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
-                          className={`font-sans text-mahogany/80 ${isMobile ? 'text-xs' : 'text-base'} leading-relaxed text-center font-bold block`}
-                        >
-                          {skill.use}
-                        </motion.span>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+          >
+            {doubledSkills.map((skill, i) => {
+              const uniqueId = `${skill.id}-${i}`;
+              return (
+                <SkillCard
+                  key={uniqueId}
+                  skill={skill}
+                  uniqueId={uniqueId}
+                  isHovered={hoveredCard === uniqueId}
+                  onEnter={() => setHoveredCard(uniqueId)}
+                  onLeave={() => setHoveredCard(null)}
+                  isMobile={isMobile}
+                />
+              );
+            })}
           </div>
         </div>
       </div>

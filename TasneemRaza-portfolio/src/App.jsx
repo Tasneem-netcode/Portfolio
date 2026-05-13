@@ -1,31 +1,45 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import SmoothScroll from './components/SmoothScroll';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
-import Projects from './components/Projects';
-import Contact from './components/Contact';
 import Background from './components/Background';
-import Writing from './components/Writing';
-import Skills from './components/Skills';
 import Cursor from './components/Cursor';
-import Process from './components/Process';
-import Services from './components/Services';
+
+/* ── Lazy-loaded route components ── */
+const Projects = lazy(() => import('./components/Projects'));
+const Skills = lazy(() => import('./components/Skills'));
+const Contact = lazy(() => import('./components/Contact'));
+const Writing = lazy(() => import('./components/Writing'));
+const Process = lazy(() => import('./components/Process'));
+const Services = lazy(() => import('./components/Services'));
+
+/* Quick page transition — snappier than before */
+const pageVariants = {
+  initial: { opacity: 0, y: 12 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -12 },
+};
+const pageTransition = { duration: 0.35, ease: [0.16, 1, 0.3, 1] };
 
 function Home() {
   return (
     <motion.main 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      transition={pageTransition}
       className="relative z-10 mix-blend-normal"
     >
       <Hero />
       <About />
-      <Skills />
-      <Projects />
+      <Suspense fallback={null}>
+        <Skills />
+        <Projects />
+      </Suspense>
     </motion.main>
   );
 }
@@ -33,12 +47,15 @@ function Home() {
 function PageWrapper({ children }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      transition={pageTransition}
     >
-      {children}
+      <Suspense fallback={null}>
+        {children}
+      </Suspense>
     </motion.div>
   );
 }
@@ -53,7 +70,6 @@ function AnimatedRoutes() {
         <Route path="/process" element={<PageWrapper><Process /></PageWrapper>} />
         <Route path="/services" element={<PageWrapper><Services /></PageWrapper>} />
       </Routes>
-
     </AnimatePresence>
   );
 }
@@ -64,12 +80,12 @@ function App() {
       <Cursor />
       <SmoothScroll>
         <Background />
-        {/* Global Glassmorphic Vignettes */}
-        <div className="fixed top-0 left-0 right-0 h-10 sm:h-16 md:h-24 backdrop-blur-[12px] bg-porcelain/20 z-[45] pointer-events-none mask-gradient-bottom"></div>
-        <div className="fixed bottom-0 left-0 right-0 h-10 sm:h-16 md:h-24 backdrop-blur-[12px] bg-porcelain/20 z-[45] pointer-events-none mask-gradient-top"></div>
+        {/* Navbar top/bottom fades are inside Navbar now — no backdrop-blur here */}
         <Navbar />
         <AnimatedRoutes />
-        <Contact />
+        <Suspense fallback={null}>
+          <Contact />
+        </Suspense>
       </SmoothScroll>
     </Router>
   );

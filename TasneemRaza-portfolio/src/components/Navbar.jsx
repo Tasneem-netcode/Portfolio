@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import GlowButton from './GlowButton';
@@ -8,13 +8,9 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const { scrollY } = useScroll();
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest > 100) {
-      setScrolled(true);
-    } else {
-      setScrolled(false);
-    }
-  });
+  useMotionValueEvent(scrollY, "change", useCallback((latest) => {
+    setScrolled(latest > 100);
+  }, []));
 
   const links = [
     { name: "Work", path: "/" },
@@ -45,7 +41,7 @@ export default function Navbar() {
       <motion.header
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 sm:px-6 md:px-12 pt-5 sm:pt-6 md:pt-8 pb-3 sm:pb-4 pointer-events-none"
       >
         <Link to="/" className="font-cursive text-2xl sm:text-3xl md:text-5xl lg:text-[3.5rem] tracking-normal text-mahogany pointer-events-auto hover:opacity-80 transition-opacity" style={{ lineHeight: 1 }}>
@@ -69,10 +65,10 @@ export default function Navbar() {
           opacity: scrolled ? 0.85 : 1,
           scale: scrolled ? 0.95 : 1
         }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], y: { duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] } }}
+        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1], y: { duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] } }}
         className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-auto max-w-[92vw] sm:max-w-[90vw] md:max-w-none w-max"
       >
-        <div className="flex items-center p-1 sm:p-1.5 rounded-full bg-mahogany/95 backdrop-blur-xl border border-porcelain/20 shadow-[0_8px_32px_rgba(88,51,30,0.4)] relative overflow-hidden">
+        <div className="flex items-center p-1 sm:p-1.5 rounded-full bg-[#5b331e] border border-porcelain/20 shadow-[0_8px_32px_rgba(88,51,30,0.4)] relative overflow-hidden">
           
           <div className="flex items-center overflow-x-auto overflow-y-hidden hide-scrollbar scroll-smooth pl-0.5 sm:pl-1 pr-0.5 sm:pr-1 md:pr-0">
             {links.map(link => {
@@ -82,7 +78,7 @@ export default function Navbar() {
                 <Link
                   key={link.name}
                   to={link.path}
-                  className="group relative px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 md:py-2.5 rounded-full flex-shrink-0 overflow-hidden transition-all duration-300"
+                  className="group relative px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 md:py-2.5 rounded-full flex-shrink-0 overflow-hidden transition-colors duration-300"
                 >
                   {isActive && (
                     <motion.div

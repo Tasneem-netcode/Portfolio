@@ -11,11 +11,14 @@ export default function Background() {
     let w, h, imgData, pixels;
 
     const resize = () => {
-      // Lower resolution scaled up, creating the dreamy blur
-      w = Math.floor(window.innerWidth / 2);
-      h = Math.floor(window.innerHeight / 2);
+      // 12x extreme downscale to eliminate lag completely. 
+      // A CSS blur will smooth the large pixels perfectly into a dreamy gradient.
+      const scale = 12;
+      w = Math.ceil(window.innerWidth / scale);
+      h = Math.ceil(window.innerHeight / scale);
       canvas.width = w;
       canvas.height = h;
+      // Force the canvas to span the screen visually
       canvas.style.width = window.innerWidth + 'px';
       canvas.style.height = window.innerHeight + 'px';
       imgData = ctx.createImageData(w, h);
@@ -54,10 +57,10 @@ export default function Background() {
           const light = (-dx * 0.7 + -dy * 0.7) * 0.5;
           const brightness = 0.5 + light * 0.45;
 
-          // Heavenly pure white/porcelain look, removing the warm/yellow OAT
+          // Heavenly pure white/porcelain look
           const bR = 252, bG = 251, bB = 250; 
           const hiR = 255, hiG = 255, hiB = 255;
-          const sR = 232, sG = 229, sB = 224; // PORCELAIN #E8E5E0 as the shadow
+          const sR = 232, sG = 229, sB = 224; // PORCELAIN shadow
           
           let r,g,b;
           if (brightness > 0.5) {
@@ -72,9 +75,9 @@ export default function Background() {
             b = bB + (sB - bB) * t2;
           }
           
-          pixels[idx] = Math.max(0, Math.min(255, r));
-          pixels[idx+1] = Math.max(0, Math.min(255, g));
-          pixels[idx+2] = Math.max(0, Math.min(255, b));
+          pixels[idx] = r;
+          pixels[idx+1] = g;
+          pixels[idx+2] = b;
           pixels[idx+3] = 255;
         }
       }
@@ -90,11 +93,15 @@ export default function Background() {
   }, []);
 
   return (
-    <div className="fixed inset-0 w-screen h-screen z-[-1] pointer-events-none">
+    <div className="fixed inset-0 w-screen h-screen z-[-1] pointer-events-none overflow-hidden">
       <canvas 
         ref={canvasRef} 
         className="w-full h-full" 
-        style={{ imageRendering: 'auto' }} 
+        style={{ 
+          imageRendering: 'auto', 
+          filter: 'blur(32px)', 
+          transform: 'scale(1.2)' // Scale slightly to hide blurred edges 
+        }} 
       />
       {/* Subtle paper noise texture */}
       <svg className="absolute inset-0 w-full h-full opacity-[0.25] mix-blend-overlay pointer-events-none z-0">

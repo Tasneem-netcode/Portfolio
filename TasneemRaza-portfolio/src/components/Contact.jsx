@@ -30,11 +30,11 @@ export default function Contact() {
 
   const stagger = {
     hidden: {},
-    visible: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } }
+    visible: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } }
   };
   const fadeUp = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } }
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
   };
 
   const socials = [
@@ -55,107 +55,44 @@ export default function Contact() {
     }
   ];
 
+  /* Polaroid images — static positions, no infinite animation loops */
+  const polaroids = [
+    { src: "/img1.png", alt: "Visual Concept", className: "top-[6%] left-[3%] w-64 -rotate-7" },
+    { src: "/img4.png", alt: "Architecture", className: "top-[10%] right-[3%] w-72 rotate-9" },
+    { src: "/img7.png", alt: "Aesthetic", className: "bottom-[8%] left-[6%] w-[17rem] rotate-11" },
+    { src: "/img5.png", alt: "Design", className: "bottom-[12%] right-[8%] w-[20rem] -rotate-13" },
+  ];
+
   return (
     <footer id="contact" className="relative bg-porcelain text-mahogany pt-20 sm:pt-28 pb-16 sm:pb-20 md:pb-24 px-4 sm:px-6 md:px-12 overflow-hidden flex flex-col min-h-[92vh]">
       
-      {/* Heavenly Background */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-15%] left-[-5%] w-[45%] h-[45%] bg-gold rounded-full blur-[140px] opacity-15" />
-        <div className="absolute top-[15%] right-[-8%] w-[35%] h-[55%] bg-porcelain rounded-full blur-[120px] opacity-50" />
-        <div className="absolute bottom-[-15%] left-[25%] w-[45%] h-[45%] bg-drift rounded-full blur-[140px] opacity-10" />
-        <div className="absolute inset-0 bg-porcelain/85" />
+      {/* High-performance CSS radial gradients */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-40">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_0%_0%,#c8a47a_0%,transparent_50%)] opacity-20" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_100%_40%,#ebe5e0_0%,transparent_60%)] opacity-60" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_40%_100%,#969284_0%,transparent_50%)] opacity-15" />
       </div>
 
-      {/* Floating Polaroid Images — no corner marks, clean */}
+      {/* Floating Polaroid Images — CSS-only hover, no infinite JS animations */}
       <div className="absolute inset-0 z-[1] pointer-events-none hidden lg:block max-w-[1800px] mx-auto w-full h-full">
-        
-        {/* Top Left */}
-        <motion.div 
-          initial={{ opacity: 0, x: -40, rotate: -15 }}
-          whileInView={{ opacity: 0.85, x: 0, rotate: -7 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute top-[6%] left-[3%] w-64 pointer-events-auto cursor-pointer"
-        >
+        {polaroids.map((p, i) => (
           <motion.div
-             animate={{ y: [-8, 8, -8], rotate: [-1, 1.5, -1] }}
-             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-             whileHover={{ scale: 1.04, rotate: -4 }}
-             className="origin-center"
+            key={p.src}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 0.85, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className={`absolute pointer-events-auto cursor-pointer ${p.className}`}
           >
-            <div className="bg-white/70 rounded-2xl p-2.5 pb-6 shadow-[0_16px_48px_rgba(88,51,30,0.08)]">
-              <div className="w-full h-48 overflow-hidden rounded-xl">
-                <img src="/img1.png" alt="Visual Concept" className="w-full h-full object-cover" />
+            <div className="origin-center transition-transform duration-700 hover:scale-105 polaroid-float" style={{ animationDelay: `${i * -1.3}s` }}>
+              <div className="bg-white/70 rounded-2xl p-2.5 pb-6 shadow-[0_16px_48px_rgba(88,51,30,0.08)]">
+                <div className="w-full h-48 overflow-hidden rounded-xl">
+                  <img src={p.src} alt={p.alt} className="w-full h-full object-cover" loading="lazy" />
+                </div>
               </div>
             </div>
           </motion.div>
-        </motion.div>
-        
-        {/* Top Right */}
-        <motion.div 
-          initial={{ opacity: 0, x: 40, rotate: 15 }}
-          whileInView={{ opacity: 0.85, x: 0, rotate: 9 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute top-[10%] right-[3%] w-72 pointer-events-auto cursor-pointer"
-        >
-          <motion.div
-             animate={{ y: [6, -8, 6], rotate: [0.5, -2, 0.5] }}
-             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-             whileHover={{ scale: 1.04, rotate: 6 }}
-             className="origin-center"
-          >
-            <div className="bg-white/70 rounded-2xl p-2.5 pb-6 shadow-[0_16px_48px_rgba(88,51,30,0.08)]">
-              <div className="w-full h-52 overflow-hidden rounded-xl">
-                <img src="/img4.png" alt="Architecture" className="w-full h-full object-cover" />
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-
-        {/* Bottom Left */}
-        <motion.div 
-          initial={{ opacity: 0, y: 40, rotate: 10 }}
-          whileInView={{ opacity: 0.8, y: 0, rotate: 11 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.4, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute bottom-[8%] left-[6%] w-[17rem] pointer-events-auto cursor-pointer"
-        >
-          <motion.div
-             animate={{ y: [-6, 6, -6], rotate: [0.5, -1.5, 0.5] }}
-             transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-             whileHover={{ scale: 1.04, rotate: 14 }}
-             className="origin-center"
-          >
-            <div className="bg-white/70 rounded-2xl p-2.5 pb-6 shadow-[0_16px_48px_rgba(88,51,30,0.08)]">
-              <div className="w-full h-56 overflow-hidden rounded-xl">
-                <img src="/img7.png" alt="Aesthetic" className="w-full h-full object-cover" />
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-        
-        {/* Bottom Right */}
-        <motion.div 
-          initial={{ opacity: 0, y: 40, rotate: -20 }}
-          whileInView={{ opacity: 0.8, y: 0, rotate: -13 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute bottom-[12%] right-[8%] w-[20rem] pointer-events-auto cursor-pointer"
-        >
-          <motion.div
-             animate={{ y: [7, -7, 7], rotate: [-1, 2, -1] }}
-             transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
-             whileHover={{ scale: 1.04, rotate: -10 }}
-             className="origin-center"
-          >
-            <div className="bg-white/70 rounded-2xl p-2.5 pb-6 shadow-[0_16px_48px_rgba(88,51,30,0.08)]">
-              <div className="w-full h-60 overflow-hidden rounded-xl">
-                <img src="/img5.png" alt="Design" className="w-full h-full object-cover" />
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
+        ))}
       </div>
 
       {/* ──────────────── Central Content ──────────────── */}
@@ -172,14 +109,14 @@ export default function Contact() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          variants={{ visible: { transition: { staggerChildren: 0.15, delayChildren: 0.1 } } }}
+          variants={{ visible: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } } }}
           className="font-serif text-4xl sm:text-6xl md:text-8xl lg:text-[7.5rem] text-mahogany font-light leading-none mb-4 sm:mb-6 text-center flex flex-wrap items-baseline justify-center gap-[0.2em] sm:gap-[0.25em]"
           style={{ textShadow: '0 2px 20px rgba(235,229,224,0.8), 0 4px 40px rgba(235,229,224,0.5)' }}
         >
           <motion.span
             variants={{
-              hidden: { opacity: 0, y: 40, scale: 0.85 },
-              visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } }
+              hidden: { opacity: 0, y: 30 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
             }}
             className="inline-block"
           >
@@ -187,8 +124,8 @@ export default function Contact() {
           </motion.span>
           <motion.span
             variants={{
-              hidden: { opacity: 0, y: 40, scale: 0.85 },
-              visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } }
+              hidden: { opacity: 0, y: 30 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
             }}
             className="italic text-drift inline-block"
           >
@@ -196,26 +133,12 @@ export default function Contact() {
           </motion.span>
         </motion.h2>
 
-        {/* Subtext — word-by-word sparkle reveal */}
+        {/* Subtext — single fade-up instead of word-by-word */}
         <motion.p 
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={{ visible: { transition: { staggerChildren: 0.04, delayChildren: 0.4 } } }}
-          className="text-mahogany/65 text-sm sm:text-base md:text-lg text-center mb-8 sm:mb-12 font-sans font-normal leading-relaxed px-2 sm:px-4 max-w-lg flex flex-wrap justify-center"
+          variants={fadeUp}
+          className="text-mahogany/65 text-sm sm:text-base md:text-lg text-center mb-8 sm:mb-12 font-sans font-normal leading-relaxed px-2 sm:px-4 max-w-lg"
         >
-          {"Have an idea, opportunity, or just want to talk tech? I'd love to hear from you.".split(" ").map((word, i) => (
-            <motion.span
-              key={i}
-              variants={{
-                hidden: { opacity: 0, y: 15 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
-              }}
-              className="inline-block mr-[0.3em]"
-            >
-              {word}
-            </motion.span>
-          ))}
+          Have an idea, opportunity, or just want to talk tech? I'd love to hear from you.
         </motion.p>
 
         {/* ──── Quick Contact Form ──── */}
@@ -227,13 +150,12 @@ export default function Contact() {
         >
           {/* Name field */}
           <div className="relative mb-4 sm:mb-5">
-            <motion.label 
-              className="block text-[10px] sm:text-[11px] font-sans font-semibold tracking-[0.15em] uppercase mb-2 sm:mb-2.5"
-              animate={{ color: formFocused === 'name' ? '#5b331e' : '#7a6b5d' }}
-              transition={{ duration: 0.3 }}
+            <label 
+              className="block text-[10px] sm:text-[11px] font-sans font-semibold tracking-[0.15em] uppercase mb-2 sm:mb-2.5 transition-colors duration-300"
+              style={{ color: formFocused === 'name' ? '#5b331e' : '#7a6b5d' }}
             >
               Your Name
-            </motion.label>
+            </label>
             <input
               type="text"
               value={formData.name}
@@ -241,19 +163,18 @@ export default function Contact() {
               onFocus={() => setFormFocused('name')}
               onBlur={() => setFormFocused(null)}
               placeholder="e.g. Sarah"
-              className="w-full bg-transparent border-b-[1.5px] border-mahogany/20 focus:border-mahogany/50 text-mahogany text-sm sm:text-base md:text-lg font-sans font-light pb-2.5 sm:pb-3 pt-1 outline-none placeholder:text-mahogany/25 transition-colors duration-500"
+              className="w-full bg-transparent border-b-[1.5px] border-mahogany/20 focus:border-mahogany/50 text-mahogany text-sm sm:text-base md:text-lg font-sans font-light pb-2.5 sm:pb-3 pt-1 outline-none placeholder:text-mahogany/25 transition-colors duration-300"
             />
           </div>
 
           {/* Message field */}
           <div className="relative mb-5 sm:mb-6">
-            <motion.label 
-              className="block text-[10px] sm:text-[11px] font-sans font-semibold tracking-[0.15em] uppercase mb-2 sm:mb-2.5"
-              animate={{ color: formFocused === 'message' ? '#5b331e' : '#7a6b5d' }}
-              transition={{ duration: 0.3 }}
+            <label 
+              className="block text-[10px] sm:text-[11px] font-sans font-semibold tracking-[0.15em] uppercase mb-2 sm:mb-2.5 transition-colors duration-300"
+              style={{ color: formFocused === 'message' ? '#5b331e' : '#7a6b5d' }}
             >
               Your Message
-            </motion.label>
+            </label>
             <textarea
               value={formData.message}
               onChange={(e) => setFormData({ ...formData, message: e.target.value })}
@@ -261,31 +182,20 @@ export default function Contact() {
               onBlur={() => setFormFocused(null)}
               placeholder="Tell me about your project or idea..."
               rows={3}
-              className="w-full bg-transparent border-b-[1.5px] border-mahogany/20 focus:border-mahogany/50 text-mahogany text-sm sm:text-base font-sans font-light pb-2.5 sm:pb-3 pt-1 outline-none placeholder:text-mahogany/25 transition-colors duration-500 resize-none leading-relaxed"
+              className="w-full bg-transparent border-b-[1.5px] border-mahogany/20 focus:border-mahogany/50 text-mahogany text-sm sm:text-base font-sans font-light pb-2.5 sm:pb-3 pt-1 outline-none placeholder:text-mahogany/25 transition-colors duration-300 resize-none leading-relaxed"
             />
           </div>
 
-          {/* Submit — "Start a Project" CTA */}
-          <motion.button
+          {/* Submit — "Start a Project" CTA — no infinite rotation */}
+          <button
             type="submit"
-            className="w-full relative group overflow-hidden rounded-full p-[1.5px] cursor-pointer"
-            style={{ backgroundColor: 'rgba(50,25,10,0.8)' }}
-            whileHover={{ scale: 1.02, boxShadow: '0 8px 32px rgba(88, 51, 30, 0.2)' }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full relative group overflow-hidden rounded-full cursor-pointer glow-btn transition-all duration-300 hover:shadow-[0_8px_32px_rgba(88,51,30,0.2)]"
           >
-            {/* Rotating glow strip */}
-            <motion.div 
-              animate={{ rotate: 360 }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
-              className="absolute top-1/2 left-[-50%] right-[-50%] h-[30px] -translate-y-1/2 z-0"
-              style={{ background: '#E3D5B5', filter: 'blur(10px)', opacity: 0.9 }}
-            />
-            <div className="relative z-10 flex items-center justify-center gap-2 sm:gap-3 bg-[#58331E] text-[#E8E5E0] rounded-full py-3 sm:py-4 px-6 sm:px-8 font-sans text-[13px] sm:text-[15px] font-medium tracking-wide">
+            <div className="flex items-center justify-center gap-2 sm:gap-3 bg-[#58331E] text-[#E8E5E0] rounded-full py-3 sm:py-4 px-6 sm:px-8 font-sans text-[13px] sm:text-[15px] font-medium tracking-wide">
               Start a Project
-              <ArrowUpRight size={16} strokeWidth={2} className="transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ArrowUpRight size={16} strokeWidth={2} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </div>
-          </motion.button>
+          </button>
         </motion.form>
 
         {/* ──── OR divider ──── */}
@@ -312,15 +222,15 @@ export default function Contact() {
           {/* Copy button */}
           <button 
             onClick={handleCopy}
-            className="relative p-1.5 sm:p-2 rounded-full hover:bg-mahogany/5 transition-all duration-300 shrink-0"
+            className="relative p-1.5 sm:p-2 rounded-full hover:bg-mahogany/5 transition-colors duration-300 shrink-0"
             title="Copy email"
           >
-            <motion.div initial={false} animate={{ scale: copied ? [1, 1.3, 1] : 1 }} transition={{ duration: 0.3 }}>
+            <div>
               {copied 
                 ? <Check size={14} className="text-green-600" /> 
                 : <Copy size={14} className="text-mahogany/40 hover:text-mahogany/70 transition-colors duration-300" />
               }
-            </motion.div>
+            </div>
             <AnimatePresence>
               {copied && (
                 <motion.span
@@ -352,24 +262,16 @@ export default function Contact() {
         {/* ──── Social Icons ──── */}
         <motion.div variants={fadeUp} className="flex items-center gap-3 sm:gap-4">
           {socials.map((social) => (
-            <motion.a 
+            <a 
               key={social.label}
               href={social.href} 
               target="_blank" 
               rel="noreferrer" 
               aria-label={social.label}
-              className="relative p-3 sm:p-4 rounded-full bg-white/55 border border-white/60 text-mahogany/80 hover:text-mahogany transition-colors duration-300"
-              whileHover={{ 
-                scale: 1.15, 
-                boxShadow: '0 6px 24px rgba(88,51,30,0.1)',
-                backgroundColor: 'rgba(255,255,255,0.65)',
-                borderColor: 'rgba(88,51,30,0.15)',
-              }}
-              whileTap={{ scale: 0.92 }}
-              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="relative p-3 sm:p-4 rounded-full bg-white/55 border border-white/60 text-mahogany/80 hover:text-mahogany hover:scale-110 hover:shadow-[0_6px_24px_rgba(88,51,30,0.1)] hover:bg-white/65 hover:border-mahogany/15 active:scale-95 transition-all duration-300"
             >
               {social.icon}
-            </motion.a>
+            </a>
           ))}
         </motion.div>
 

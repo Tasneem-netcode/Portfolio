@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import GlowButton from './GlowButton';
@@ -21,6 +20,12 @@ const images = [
 ];
 const doubled = [...images, ...images];
 
+/* Shared word-reveal variant — created once, not per render */
+const wordVariant = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }
+};
+
 export default function Hero() {
   return (
     <section id="home" className="relative w-full overflow-x-hidden bg-transparent pt-[10vh] sm:pt-[12vh] md:pt-[15vh] flex flex-col">
@@ -28,25 +33,19 @@ export default function Hero() {
       {/* ── Hero Text ── */}
       <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 sm:px-6 w-full max-w-6xl mx-auto">
         
-        
-
         {/* Dynamic Inline Image H1 */}
         <motion.h1 
           className="font-serif text-[2.2rem] sm:text-[3rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] text-mahogany font-light leading-[1.1] tracking-tight relative flex flex-col items-center gap-y-1 w-full"
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
+          animate="visible"
+          variants={{ visible: { transition: { staggerChildren: 0.06 } } }}
         >
           
           <div className="flex flex-wrap justify-center w-full">
             {"Designed with intention,".split(" ").map((word, i) => (
               <motion.span 
                  key={`title-1-${i}`} 
-                 variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-                 }}
+                 variants={wordVariant}
                  className="inline-block mr-[0.25em]"
               >
                  {word}
@@ -58,20 +57,14 @@ export default function Hero() {
             {"built to".split(" ").map((word, i) => (
                <motion.span 
                  key={`title-2-${i}`} 
-                 variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-                 }}
+                 variants={wordVariant}
                  className="inline-block mr-[0.25em]"
                >
                  {word}
                </motion.span>
             ))}
             <motion.span 
-              variants={{
-                 hidden: { opacity: 0, y: 20 },
-                 visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-              }}
+              variants={wordVariant}
               className="inline-block italic text-drift ml-[0.25em]"
             >
               perform.
@@ -81,9 +74,9 @@ export default function Hero() {
 
         {/* Prominent Name Header */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
+          transition={{ duration: 0.5, delay: 0.25 }}
           className="mt-8 sm:mt-10 md:mt-12 mb-2"
         >
           <span className="font-cursive text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] tracking-normal text-mahogany" style={{ lineHeight: 1 }}>
@@ -93,9 +86,9 @@ export default function Hero() {
 
         {/* Description paragraph */}
         <motion.p
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
           className="mt-2 text-drift font-sans font-light text-sm sm:text-base md:text-lg max-w-2xl leading-relaxed px-2 sm:px-4 text-center"
         >
           A CS student, frontend developer & designer 
@@ -105,9 +98,9 @@ export default function Hero() {
 
         {/* Buttons */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
           className="mt-6 sm:mt-8 md:mt-12 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full"
         >
           <GlowButton href="#contact">
@@ -151,7 +144,7 @@ export default function Hero() {
                 className="group flex-shrink-0 relative"
               >
                 <div
-                  className="w-[240px] sm:w-[320px] md:w-[480px] lg:w-[600px] xl:w-[700px] h-[180px] sm:h-[240px] md:h-[360px] lg:h-[450px] xl:h-[500px] rounded-[16px] sm:rounded-[24px] md:rounded-[32px] p-1.5 sm:p-2 md:p-3 overflow-hidden bg-white/80 transition-all duration-1000 group-hover:scale-[1.02] border border-white/60 shadow-[0_8px_40px_rgba(88,51,30,0.06)]"
+                  className="w-[240px] sm:w-[320px] md:w-[480px] lg:w-[600px] xl:w-[700px] h-[180px] sm:h-[240px] md:h-[360px] lg:h-[450px] xl:h-[500px] rounded-[16px] sm:rounded-[24px] md:rounded-[32px] p-1.5 sm:p-2 md:p-3 overflow-hidden bg-white/80 transition-transform duration-700 group-hover:scale-[1.02] border border-white/60 shadow-[0_8px_40px_rgba(88,51,30,0.06)]"
                 >
                    <div className="w-full h-full rounded-[10px] sm:rounded-[16px] md:rounded-[22px] overflow-hidden border border-mahogany/10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.03)] premium-img-wrapper">
                      <img

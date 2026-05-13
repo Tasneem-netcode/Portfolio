@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import GlowButton from './GlowButton';
 
-const RevealText = ({ text, className, stagger = 0.03 }) => {
+const RevealText = ({ text, className, stagger = 0.02 }) => {
   return (
     <motion.div 
       initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }}
@@ -14,8 +14,8 @@ const RevealText = ({ text, className, stagger = 0.03 }) => {
         <motion.span 
           key={i}
           variants={{
-             hidden: { opacity: 0, y: 15 },
-             visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+             hidden: { opacity: 0, y: 12 },
+             visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } }
           }}
           className="inline-block mr-[0.25em]"
         >
@@ -55,24 +55,26 @@ const articles = [
 
 const tags = ["All", "Emotional", "Technical", "Curious"];
 
+/* Shared variant */
+const wordVariant = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }
+};
 
 const ArticleItem = ({ article }) => {
-  const ref = useRef(null);
-
   return (
     <motion.a
       layout
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      ref={ref}
+      exit={{ opacity: 0, scale: 0.97 }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       href={article.link}
       target="_blank"
       rel="noopener noreferrer"
       className="group py-6 sm:py-8 md:py-12 border-b border-mahogany/15 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 sm:gap-6 transition-colors hover:border-mahogany/40"
     >
-      <div className="flex flex-col transform transition-transform duration-500 ease-[0.16,1,0.3,1] group-hover:-translate-y-1 w-full max-w-2xl">
+      <div className="flex flex-col transition-transform duration-300 ease-out group-hover:-translate-y-1 w-full max-w-2xl">
         <div className="flex items-center gap-2 sm:gap-4 mb-2 sm:mb-3 flex-wrap">
           <span className="text-[10px] sm:text-xs font-mono tracking-widest text-drift uppercase">
             {article.date}
@@ -91,7 +93,7 @@ const ArticleItem = ({ article }) => {
       </div>
       
       <GlowButton isCircular={true} className="w-10 h-10 sm:w-12 sm:h-12 shrink-0">
-        <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 text-white transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 text-white transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
       </GlowButton>
     </motion.a>
   );
@@ -108,10 +110,10 @@ export default function Writing() {
     <section className="min-h-screen pt-32 sm:pt-40 md:pt-48 pb-20 sm:pb-32 px-4 sm:px-6 md:px-12 flex flex-col items-center bg-porcelain">
       <div className="w-full max-w-4xl relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="mb-10 sm:mb-16 text-center md:text-left"
         >
           <motion.h1 
@@ -119,41 +121,35 @@ export default function Writing() {
             whileInView="visible"
             viewport={{ once: true, margin: "-10%" }}
             variants={{
-              visible: { transition: { staggerChildren: 0.08 } }
+              visible: { transition: { staggerChildren: 0.06 } }
             }}
             className="text-3xl sm:text-5xl md:text-7xl font-serif font-medium text-mahogany tracking-tight mb-4 sm:mb-6"
           >
             {"After ".split(" ").map((word, i) => (
               <motion.span 
                 key={`after-${i}`} 
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-                }}
+                variants={wordVariant}
                 className="inline-block mr-[0.25em]"
               >
                 {word}
               </motion.span>
             ))}
             <motion.span 
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-              }}
+              variants={wordVariant}
               className="text-drift italic inline-block"
             >
               Hours
             </motion.span>
           </motion.h1>
-          <RevealText text="A collection of my thoughts on design, engineering, and the spaces where they intersect." className="text-drift text-base sm:text-lg md:text-xl font-sans font-light max-w-lg mt-2 justify-center md:justify-start" stagger={0.02} />
+          <RevealText text="A collection of my thoughts on design, engineering, and the spaces where they intersect." className="text-drift text-base sm:text-lg md:text-xl font-sans font-light max-w-lg mt-2 justify-center md:justify-start" stagger={0.015} />
         </motion.div>
 
         {/* Filters */}
         <motion.div 
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
           className="flex flex-wrap gap-2 sm:gap-3 mb-10 sm:mb-16"
         >
           {tags.map((tag) => {

@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react';
-import { motion, useSpring } from 'framer-motion';
+import { useEffect, useRef, useState, useCallback } from 'react';
 
+/**
+ * Custom cursor — optimized to use raw DOM manipulation instead of
+ * Framer Motion springs, which were triggering React re-renders on every mouse move.
+ */
 export default function Cursor() {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(true); // default to true to not miss initial render if it mounts after hydration, but will be set by useEffect.
+  const dotRef = useRef(null);
+  const [isDesktop, setIsDesktop] = useState(true);
+  const isHoveredRef = useRef(false);
   
-  const mouseX = useSpring(0, { stiffness: 400, damping: 25 });
-  const mouseY = useSpring(0, { stiffness: 400, damping: 25 });
-
   useEffect(() => {
     const checkIsDesktop = () => {
       const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
@@ -20,44 +21,63 @@ export default function Cursor() {
 
   useEffect(() => {
     if (!isDesktop) return;
-    
-    const mouseMove = (e) => {
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
+    const dot = dotRef.current;
+    if (!dot) return;
+
+    let targetX = 0, targetY = 0;
+    let currentX = 0, currentY = 0;
+    let rafId = null;
+
+    const lerp = (start, end, t) => start + (end - start) * t;
+
+    const animate = () => {
+      currentX = lerp(currentX, targetX, 0.15);
+      currentY = lerp(currentY, targetY, 0.15);
+      dot.style.transform = `translate3d(${currentX - 5}px, ${currentY - 5}px, 0)`;
+      rafId = requestAnimationFrame(animate);
+    };
+    rafId = requestAnimationFrame(animate);
+
+    const onMove = (e) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
     };
 
-    const handleMouseOver = (e) => {
+    const onOver = (e) => {
       const isClickable = e.target.closest('a, button, [role="button"]');
-      setIsHovered(!!isClickable);
+      const hovered = !!isClickable;
+      if (hovered !== isHoveredRef.current) {
+        isHoveredRef.current = hovered;
+        dot.style.width = hovered ? '24px' : '10px';
+        dot.style.height = hovered ? '24px' : '10px';
+        dot.style.opacity = hovered ? '0.6' : '0.9';
+      }
     };
 
-    window.addEventListener("mousemove", mouseMove);
-    window.addEventListener("mouseover", handleMouseOver);
+    window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("mouseover", onOver, { passive: true });
 
     return () => {
-      window.removeEventListener("mousemove", mouseMove);
-      window.removeEventListener("mouseover", handleMouseOver);
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseover", onOver);
     };
-  }, [mouseX, mouseY, isDesktop]);
+  }, [isDesktop]);
 
   if (!isDesktop) return null;
 
   return (
-    <motion.div
-      className="fixed top-0 left-0 bg-gold rounded-full pointer-events-none z-[9999]"
+    <div
+      ref={dotRef}
+      className="fixed top-0 left-0 rounded-full pointer-events-none z-[9999]"
       style={{
-        x: mouseX,
-        y: mouseY,
-        translateX: '-50%',
-        translateY: '-50%'
+        width: '10px',
+        height: '10px',
+        backgroundColor: 'var(--color-gold)',
+        opacity: 0.9,
+        willChange: 'transform',
+        transition: 'width 0.2s, height 0.2s, opacity 0.2s',
       }}
-      initial={{ width: 10, height: 10 }}
-      animate={{
-        width: isHovered ? 24 : 10,
-        height: isHovered ? 24 : 10,
-        opacity: isHovered ? 0.6 : 0.9
-      }}
-      transition={{ duration: 0.2 }}
     />
   );
 }

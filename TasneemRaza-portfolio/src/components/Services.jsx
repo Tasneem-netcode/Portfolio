@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import { Plus, Minus } from 'lucide-react';
 
-const RevealText = ({ text, className, stagger = 0.03 }) => {
+const RevealText = ({ text, className, stagger = 0.02 }) => {
   return (
     <motion.div 
       initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-10%" }}
@@ -13,8 +13,8 @@ const RevealText = ({ text, className, stagger = 0.03 }) => {
         <motion.span 
           key={i}
           variants={{
-             hidden: { opacity: 0, y: 15 },
-             visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+             hidden: { opacity: 0, y: 12 },
+             visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } }
           }}
           className="inline-block mr-[0.25em]"
         >
@@ -63,6 +63,12 @@ const rightImages = [
   "/img4.png",
 ];
 
+/* Shared variant */
+const wordVariant = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }
+};
+
 export default function Services() {
   const [openIndex, setOpenIndex] = useState(0);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -93,21 +99,21 @@ export default function Services() {
   return (
     <section className="min-h-screen pt-16 sm:pt-20 px-4 sm:px-6 md:px-12 pb-16 sm:pb-24 flex flex-col items-center bg-porcelain overflow-hidden relative">
       
-      {/* Ethereal background */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[8%] left-[-8%] w-[50%] h-[50%] bg-white rounded-full blur-[130px] opacity-60" />
-        <div className="absolute bottom-[-5%] right-[5%] w-[45%] h-[45%] bg-[#E3D5B5] rounded-full blur-[140px] opacity-20" />
-        <div className="absolute top-[40%] left-[30%] w-[40%] h-[30%] bg-white rounded-full blur-[100px] opacity-30" />
+      {/* High-performance CSS radial gradients instead of heavy blur */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-40">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_10%_10%,rgba(255,255,255,0.8)_0%,transparent_50%)] opacity-60" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_90%_90%,rgba(227,213,181,0.5)_0%,transparent_50%)] opacity-40" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_40%_40%,rgba(255,255,255,0.6)_0%,transparent_40%)] opacity-30" />
       </div>
 
       <div className="w-full max-w-[1400px] mx-auto relative z-10 flex flex-col mt-6 sm:mt-8 md:mt-12">
         
         {/* --- TOP HEADER --- */}
         <motion.div 
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="w-full lg:w-1/2 flex flex-col mb-10 sm:mb-16"
         >
           <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
@@ -119,63 +125,47 @@ export default function Services() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-10%" }}
-            variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
+            variants={{ visible: { transition: { staggerChildren: 0.06 } } }}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-[4rem] font-serif text-mahogany font-medium tracking-tight mb-4 sm:mb-6 leading-[1.1] flex flex-wrap"
           >
             {"What I".split(" ").map((word, i) => (
               <motion.span 
                 key={`what-${i}`} 
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-                }}
+                variants={wordVariant}
                 className="inline-block mr-[0.25em]"
               >
                 {word}
               </motion.span>
             ))}
             <motion.span 
-              variants={{
-                 hidden: { opacity: 0, y: 20 },
-                 visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-              }}
+              variants={wordVariant}
               className='text-mahogany/60 italic inline-block'
             >
               Offer
             </motion.span>
           </motion.h1>
-          <RevealText text="Whether you're a startup, a local brand, or a recruiter — here's how I can help bring your vision to life natively in the browser." className="text-mahogany/55 text-sm sm:text-base md:text-lg font-sans font-light max-w-lg leading-relaxed mt-2" stagger={0.02} />
+          <RevealText text="Whether you're a startup, a local brand, or a recruiter — here's how I can help bring your vision to life natively in the browser." className="text-mahogany/55 text-sm sm:text-base md:text-lg font-sans font-light max-w-lg leading-relaxed mt-2" stagger={0.015} />
         </motion.div>
 
         {/* --- SPLIT LAYOUT: CLEAN PANELS + FRAMED IMAGE STACK --- */}
         <div className="w-full flex flex-col lg:flex-row items-start gap-8 sm:gap-10 lg:gap-16">
           
-          {/* LEFT: Clean accordion panels (inspired by reference) */}
+          {/* LEFT: Clean accordion panels */}
           <div className="w-full lg:w-[50%] flex flex-col gap-0">
             {services.map((service, index) => {
               const isOpen = openIndex === index;
               return (
                 <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.08 }}
+                  transition={{ duration: 0.4, delay: index * 0.06 }}
                   key={service.id}
                   className="relative"
                 >
                   {/* Clean panel — minimal, spacious */}
-                  <motion.div
-                    animate={{
-                      backgroundColor: isOpen ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.2)',
-                      boxShadow: isOpen 
-                        ? '0 4px 30px rgba(88, 51, 30, 0.04)' 
-                        : '0 0px 0px rgba(0,0,0,0)',
-                    }}
-                    whileHover={{ 
-                      backgroundColor: isOpen ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.35)',
-                    }}
-                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                    className="relative rounded-2xl overflow-hidden"
+                  <div
+                    className={`relative rounded-2xl overflow-hidden transition-all duration-300 ${isOpen ? 'bg-white/55 shadow-[0_4px_30px_rgba(88,51,30,0.04)]' : 'bg-white/20 hover:bg-white/35'}`}
                   >
                     {/* Top separator line */}
                     {index === 0 && (
@@ -191,16 +181,12 @@ export default function Services() {
                       </h3>
 
                       {/* Clean +/- icon */}
-                      <motion.span 
-                        className="text-mahogany/35 shrink-0"
-                        whileHover={{ scale: 1.1 }}
-                        transition={{ duration: 0.2 }}
-                      >
+                      <span className="text-mahogany/35 shrink-0 hover:scale-110 transition-transform duration-200">
                         {isOpen 
                           ? <Minus size={20} strokeWidth={1.5} /> 
                           : <Plus size={20} strokeWidth={1.5} />
                         }
-                      </motion.span>
+                      </span>
                     </button>
 
                     <AnimatePresence initial={false}>
@@ -210,17 +196,12 @@ export default function Services() {
                           animate={{ height: "auto", opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
                           transition={{ 
-                            height: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
-                            opacity: { duration: 0.4, delay: 0.08, ease: "easeInOut" }
+                            height: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
+                            opacity: { duration: 0.25, delay: 0.05, ease: "easeInOut" }
                           }}
                           className="overflow-hidden"
                         >
-                          <motion.div 
-                            className="px-4 sm:px-7 pb-6 sm:pb-8 pt-0"
-                            initial={{ y: 8 }}
-                            animate={{ y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-                          >
+                          <div className="px-4 sm:px-7 pb-6 sm:pb-8 pt-0">
                             <p className="font-sans text-mahogany/55 text-[13px] sm:text-[15px] md:text-base font-light leading-relaxed mb-4 sm:mb-5 max-w-md">
                               {service.desc}
                             </p>
@@ -229,7 +210,7 @@ export default function Services() {
                               {/* Pill-style tags */}
                               <div className="flex flex-wrap gap-1.5 sm:gap-2">
                                 {service.tags.map(tag => (
-                                  <span key={tag} className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-white/50 text-mahogany/65 font-sans font-medium text-[9px] sm:text-[10px] uppercase tracking-[0.12em] rounded-full border border-mahogany/8 hover:border-mahogany/15 hover:bg-white/70 transition-all duration-300">
+                                  <span key={tag} className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-white/50 text-mahogany/65 font-sans font-medium text-[9px] sm:text-[10px] uppercase tracking-[0.12em] rounded-full border border-mahogany/8 hover:border-mahogany/15 hover:bg-white/70 transition-colors duration-300">
                                     {tag}
                                   </span>
                                 ))}
@@ -238,14 +219,14 @@ export default function Services() {
                                 Starting at: <span className="text-mahogany font-semibold">{service.price}</span>
                               </div>
                             </div>
-                          </motion.div>
+                          </div>
                         </motion.div>
                       )}
                     </AnimatePresence>
 
                     {/* Bottom separator line */}
                     <div className="absolute bottom-0 left-4 sm:left-6 right-4 sm:right-6 h-px bg-mahogany/8" />
-                  </motion.div>
+                  </div>
                 </motion.div>
               );
             })}
@@ -253,13 +234,13 @@ export default function Services() {
 
           {/* RIGHT: Framed image stack with slow cycling */}
           <motion.div 
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
             className="w-full lg:w-[50%] relative min-h-[300px] sm:min-h-[420px] md:min-h-[520px] flex items-center justify-center mt-4 sm:mt-8 lg:mt-0"
           >
-            {/* Bracket-corner frames behind the images (reference style) */}
+            {/* Bracket-corner frames behind the images */}
             {rightImages.map((_, i) => {
               const offset = (i - activeImageIndex + rightImages.length) % rightImages.length;
               if (offset > 2) return null;
@@ -269,20 +250,13 @@ export default function Services() {
               const scaleAmount = 1 - (offset * 0.04);
 
               return (
-                <motion.div
+                <div
                   key={`frame-${i}`}
-                  animate={{
-                    x: xShift,
-                    y: yShift,
-                    scale: scaleAmount,
+                  className="absolute inset-0 m-auto w-[90%] sm:w-[85%] lg:w-[92%] aspect-[4/3] pointer-events-none z-0 transition-all duration-1000 ease-out"
+                  style={{
+                    transform: `translate(${xShift}px, ${yShift}px) scale(${scaleAmount})`,
                     opacity: 0.6 - (offset * 0.15),
                   }}
-                  transition={{ 
-                    duration: 2.0,
-                    ease: [0.25, 0.46, 0.45, 0.94],
-                    delay: 0.05,
-                  }}
-                  className="absolute inset-0 m-auto w-[90%] sm:w-[85%] lg:w-[92%] aspect-[4/3] pointer-events-none z-0"
                 >
                   {/* Corner brackets */}
                   <div className="absolute -top-2 -left-2 w-4 sm:w-6 h-4 sm:h-6 border-t-[1.5px] border-l-[1.5px] border-mahogany/20" />
@@ -292,16 +266,15 @@ export default function Services() {
                   
                   {/* Thin border */}
                   <div className="absolute inset-0 border border-mahogany/8 rounded-sm" />
-                </motion.div>
+                </div>
               );
             })}
 
-            {/* Images — smooth, cinematic cycling */}
+            {/* Images — CSS transition instead of Framer Motion animate */}
             {rightImages.map((img, i) => {
               const offset = (i - activeImageIndex + rightImages.length) % rightImages.length;
               const zIndex = 30 - offset;
               
-              // Stack layout: each card offsets slightly down-left behind the front
               const yShift = offset * 25;
               const xShift = offset * -20;
               const scaleAmount = 1 - (offset * 0.04);
@@ -312,31 +285,25 @@ export default function Services() {
                 : `0 ${8 + offset * 4}px ${20 + offset * 8}px rgba(88, 51, 30, ${0.05})`;
 
               return (
-                <motion.div
+                <div
                   key={img}
-                  animate={{
-                    x: xShift,
-                    y: yShift,
-                    scale: scaleAmount,
-                    zIndex: zIndex,
+                  className="absolute inset-0 m-auto w-[90%] sm:w-[85%] lg:w-[92%] aspect-[4/3] bg-white/60 rounded-xl sm:rounded-2xl md:rounded-3xl border border-white/60 p-2 sm:p-2.5 md:p-3 overflow-hidden origin-center transition-all duration-1000 ease-out"
+                  style={{
+                    transform: `translate(${xShift}px, ${yShift}px) scale(${scaleAmount})`,
+                    zIndex,
                     opacity: opacityAmount,
+                    boxShadow: dropShadow,
                   }}
-                  transition={{ 
-                    duration: 2.0,        // Very slow, deliberate transition
-                    ease: [0.25, 0.46, 0.45, 0.94],  // Smooth ease-out
-                    delay: 0.0,
-                  }}
-                  style={{ boxShadow: dropShadow }}
-                  className="absolute inset-0 m-auto w-[90%] sm:w-[85%] lg:w-[92%] aspect-[4/3] bg-white/60 rounded-xl sm:rounded-2xl md:rounded-3xl border border-white/60 p-2 sm:p-2.5 md:p-3 overflow-hidden origin-center"
                 >
                   <div className="w-full h-full relative rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden bg-[#E8E5E0] premium-img-wrapper">
                     <img 
                       src={img} 
                       alt="Portfolio web sample" 
-                      className="w-full h-full object-cover" 
+                      className="w-full h-full object-cover"
+                      loading="lazy"
                     />
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </motion.div>

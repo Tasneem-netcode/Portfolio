@@ -21,6 +21,11 @@
   h1, h2, h3, h4 {
     @apply font-serif;
   }
+
+  /* GPU-promote all animated elements */
+  *, *::before, *::after {
+    -webkit-font-smoothing: antialiased;
+  }
 }
 
 @layer utilities {
@@ -61,9 +66,14 @@
   100% { transform: rotateY(-360deg); }
 }
 
-@keyframes float-gentle {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+/* ─── Lightweight polaroid float (CSS only, GPU-composited) ─── */
+@keyframes polaroid-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-6px) rotate(0.5deg); }
+}
+
+.polaroid-float {
+  animation: polaroid-float 6s ease-in-out infinite;
 }
 
 /* Pause marquee on hover */
@@ -71,14 +81,12 @@
   animation-play-state: paused;
 }
 
-/* ─── Heaven Gates CTA Glow ─── */
-@keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 4px 30px rgba(88,51,30,0.06), inset 0 1px 0 rgba(255,255,255,0.6), 0 0 0 0 rgba(227,214,181,0); }
-  50% { box-shadow: 0 4px 30px rgba(88,51,30,0.06), inset 0 1px 0 rgba(255,255,255,0.6), 0 0 30px 8px rgba(227,214,181,0.25); }
+/* ─── GlowButton hover glow (CSS box-shadow, replaces infinite JS rotation) ─── */
+.glow-btn {
+  transition: box-shadow 0.4s ease, opacity 0.3s ease;
 }
-
-#about a:hover {
-  animation: glow-pulse 2s ease-in-out infinite;
+.glow-btn:hover {
+  box-shadow: 0 0 20px 4px rgba(227, 214, 181, 0.35), 0 4px 16px rgba(88, 51, 30, 0.1);
 }
 
 /* Premium Portfolio Visual for Images (Soft Warm Beige, Desaturated, Vignette, Grain) */
@@ -89,7 +97,7 @@
 
 .premium-img-wrapper img {
   filter: sepia(0.2) saturate(0.8) brightness(0.9) contrast(1.05);
-  transition: all 0.5s ease;
+  transition: filter 0.5s ease, transform 0.5s ease;
 }
 
 .premium-img-wrapper::after {

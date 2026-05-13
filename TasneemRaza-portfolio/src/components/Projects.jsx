@@ -1,11 +1,7 @@
-import { useState, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { useState, memo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import GlowButton from './GlowButton';
-
-import p1 from '../assets/p1.png';
-import p2 from '../assets/p2.png';
-import p3 from '../assets/p3.png';
 
 const tags = [
   { name: "All", count: 9 },
@@ -120,100 +116,98 @@ const allProjects = [
   }
 ];
 
-const ProjectCard = ({ project, index }) => {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
+/* ── Shared animation config ── */
+const cardVariants = {
+  initial: { opacity: 0, y: 15 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+  exit: { opacity: 0, scale: 0.98, transition: { duration: 0.2 } },
+};
 
+const ProjectCard = memo(function ProjectCard({ project, index }) {
   const isEven = index % 2 === 0;
-  // Odd items have a stronger parallax and a margin-top to stagger the grid beautifully
-  const y = useTransform(scrollYProgress, [0, 1], isEven ? [60, -60] : [120, -120]);
-
+  
   return (
-    <motion.div ref={ref} style={{ y }} className="w-full">
-      <motion.div
-        layout
-        initial={{ opacity: 0, scale: 0.95 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true, margin: "-100px" }}
-        exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.4 } }}
-        transition={{ 
-          duration: 1.2, 
-          ease: [0.16, 1, 0.3, 1], 
-          layout: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
-          delay: index * 0.1 
-        }}
-        className="group flex flex-col w-full outline-none transition-transform duration-700 hover:-translate-y-2 relative"
-        style={{ marginTop: isEven ? '0px' : (typeof window !== 'undefined' && window.innerWidth < 768 ? '0px' : '80px') }}
+    <motion.div
+      variants={cardVariants}
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true, margin: "-40px" }}
+      exit="exit"
+      className="group flex flex-col w-full outline-none transition-transform duration-300 hover:-translate-y-1 relative"
+      style={{ marginTop: isEven ? '0px' : (typeof window !== 'undefined' && window.innerWidth < 768 ? '0px' : '40px') }}
+    >
+      {/* Built in X days badge */}
+      <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-white/90 text-mahogany text-[10px] sm:text-xs font-semibold shadow-sm overflow-hidden border border-white/40">
+        {project.timeBadge}
+      </div>
+
+      {/* Image Container — click navigates to live link */}
+      <a 
+        href={project.liveLink || "#"} 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="relative w-full aspect-[4/3] overflow-hidden bg-porcelain mb-4 sm:mb-6 rounded-[8px] transition-shadow duration-300 ease-out group-hover:shadow-[0_10px_30px_rgba(88,51,30,0.08)] premium-img-wrapper group/image block cursor-pointer"
       >
-        {/* Built in X days badge */}
-        <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-white/80 text-mahogany text-[10px] sm:text-xs font-semibold shadow-sm overflow-hidden border border-white/40">
-          {project.timeBadge}
-        </div>
-
-        {/* Image Container — click navigates to live link */}
-        <a 
-          href={project.liveLink || "#"} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="relative w-full aspect-[4/3] overflow-hidden bg-mahogany/5 mb-4 sm:mb-6 rounded-[8px] transition-all duration-700 ease-[0.16,1,0.3,1] group-hover:shadow-[0_20px_60px_rgba(88,51,30,0.15)] premium-img-wrapper group/image block cursor-pointer"
-        >
-          <img 
-            src={project.image} 
-            alt={project.title}
-            className="w-full h-full object-cover transition-transform duration-[1.5s] ease-[0.16,1,0.3,1] scale-[1.05] group-hover/image:scale-[1.12]"
-          />
-          <div className="absolute inset-0 bg-gold/30 mix-blend-multiply opacity-0 transition-opacity duration-700 group-hover/image:opacity-100 pointer-events-none" />
-          
-          {/* Hover Actions: View Live & GitHub */}
-          <div className="absolute inset-0 z-30 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 md:gap-4 opacity-0 transition-opacity duration-500 group-hover/image:opacity-100 bg-mahogany/30" onClick={e => e.preventDefault()}>
-             <a href={project.liveLink || "#"} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-white text-mahogany text-xs sm:text-sm font-medium hover:scale-105 transition-all duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.12)] border border-white/80 pointer-events-auto hover:shadow-[0_8px_24px_rgba(0,0,0,0.18)]">
-                ↗ View Live
-             </a>
-             {project.github && (
-               <a href={project.github} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-mahogany text-white text-xs sm:text-sm font-medium hover:scale-105 transition-all duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.2)] border border-mahogany/20 pointer-events-auto hover:shadow-[0_8px_24px_rgba(0,0,0,0.25)]">
-                  GitHub
-               </a>
-             )}
-          </div>
-        </a>
+        <img 
+          src={project.image} 
+          alt={project.title}
+          className="w-full h-full object-cover transition-transform duration-500 ease-out scale-[1.02] group-hover/image:scale-[1.05]"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gold/10 mix-blend-multiply opacity-0 transition-opacity duration-300 group-hover/image:opacity-100 pointer-events-none" />
         
-        {/* Text Details & Arrow */}
-        <div className="flex flex-col relative mx-1 sm:mx-2">
-          <div className="flex items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3 mt-1 flex-wrap">
-            {project.techTags.map(tag => (
-              <span key={tag} className="px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full border border-drift/30 text-drift text-[10px] sm:text-[11px] font-mono uppercase tracking-wider bg-white/50">
-                {tag}
-              </span>
-            ))}
-          </div>
-
-          <div className="flex items-start justify-between border-b border-mahogany/20 pb-3 sm:pb-4 mb-3 sm:mb-4 overflow-hidden relative">
-            {/* Hover animated border overlay */}
-            <div className="absolute bottom-0 left-0 h-[1.5px] bg-mahogany w-full origin-left scale-x-0 transition-transform duration-700 ease-[0.16,1,0.3,1] group-hover:scale-x-100" />
-            
-            <div className="flex flex-col transform transition-transform duration-500 ease-[0.16,1,0.3,1] pr-3 sm:pr-4">
-              <h3 className="text-xl sm:text-[28px] md:text-3xl font-sans font-medium text-mahogany tracking-tight leading-[1.1] mb-1">{project.title}</h3>
-              <p className="text-drift font-sans font-light text-sm sm:text-base md:text-lg mt-1 transition-colors duration-500 group-hover:text-mahogany/80">{project.category}</p>
-            </div>
-            
-            {/* GlowButton Arrow — matches Writing page style */}
-            <a href={project.liveLink || "#"} target="_blank" rel="noopener noreferrer" className="shrink-0 translate-x-4 translate-y-4 opacity-0 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-[0.16,1,0.3,1]">
-              <GlowButton isCircular={true} className="w-9 h-9 sm:w-11 sm:h-11">
-                <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 text-white transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </GlowButton>
-            </a>
-          </div>
-
-          <p className="text-[13px] sm:text-[15px] font-sans font-medium text-mahogany/70 max-w-sm leading-relaxed">
-            {project.impact}
-          </p>
+        {/* Hover Actions: View Live & GitHub */}
+        <div className="absolute inset-0 z-30 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 md:gap-4 opacity-0 transition-opacity duration-300 group-hover/image:opacity-100 bg-mahogany/10" onClick={e => e.preventDefault()}>
+           <a href={project.liveLink || "#"} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-white text-mahogany text-xs sm:text-sm font-medium hover:scale-105 transition-transform duration-200 shadow-[0_4px_16px_rgba(0,0,0,0.12)] border border-white/80 pointer-events-auto">
+              ↗ View Live
+           </a>
+           {project.github && (
+             <a href={project.github} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-mahogany text-white text-xs sm:text-sm font-medium hover:scale-105 transition-transform duration-200 shadow-[0_4px_16px_rgba(0,0,0,0.2)] border border-mahogany/20 pointer-events-auto">
+                GitHub
+             </a>
+           )}
         </div>
-      </motion.div>
+      </a>
+      
+      {/* Text Details & Arrow */}
+      <div className="flex flex-col relative mx-1 sm:mx-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3 mt-1 flex-wrap">
+          {project.techTags.map(tag => (
+            <span key={tag} className="px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full border border-drift/30 text-drift text-[10px] sm:text-[11px] font-mono uppercase tracking-wider bg-white/50">
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        <div className="flex items-start justify-between border-b border-mahogany/20 pb-3 sm:pb-4 mb-3 sm:mb-4 overflow-hidden relative">
+          {/* Hover animated border overlay */}
+          <div className="absolute bottom-0 left-0 h-[1.5px] bg-mahogany w-full origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100" />
+          
+          <div className="flex flex-col pr-3 sm:pr-4">
+            <h3 className="text-xl sm:text-[28px] md:text-3xl font-sans font-medium text-mahogany tracking-tight leading-[1.1] mb-1">{project.title}</h3>
+            <p className="text-drift font-sans font-light text-sm sm:text-base md:text-lg mt-1 transition-colors duration-300 group-hover:text-mahogany/80">{project.category}</p>
+          </div>
+          
+          {/* GlowButton Arrow */}
+          <a href={project.liveLink || "#"} target="_blank" rel="noopener noreferrer" className="shrink-0 translate-x-4 translate-y-4 opacity-0 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 ease-out">
+            <GlowButton isCircular={true} className="w-9 h-9 sm:w-11 sm:h-11">
+              <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 text-white transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </GlowButton>
+          </a>
+        </div>
+
+        <p className="text-[13px] sm:text-[15px] font-sans font-medium text-mahogany/70 max-w-sm leading-relaxed">
+          {project.impact}
+        </p>
+      </div>
     </motion.div>
   );
+});
+
+/* Shared variant */
+const wordVariant = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } }
 };
 
 export default function Projects() {
@@ -225,12 +219,11 @@ export default function Projects() {
 
   return (
     <section id="projects" className="py-16 sm:py-24 px-4 sm:px-6 md:px-12 bg-porcelain text-mahogany relative min-h-screen overflow-hidden">
-       {/* Heavenly Gradient Background using Palette */}
-       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-         <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-gold rounded-full blur-[120px] opacity-30" />
-         <div className="absolute top-[20%] right-[-10%] w-[40%] h-[60%] bg-porcelain rounded-full blur-[100px] opacity-80" />
-         <div className="absolute bottom-[-10%] left-[30%] w-[50%] h-[50%] bg-drift rounded-full blur-[120px] opacity-20" />
-         <div className="absolute inset-0 bg-porcelain/60" />
+       {/* High-performance CSS radial gradients instead of heavy blur */}
+       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-40">
+         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,#c8a47a_0%,transparent_60%)] opacity-30" />
+         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_80%,#ebe5e0_0%,transparent_60%)] opacity-80" />
+         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_100%,#969284_0%,transparent_60%)] opacity-20" />
        </div>
 
        <div className="max-w-[1300px] mx-auto relative z-10 flex flex-col items-center">
@@ -245,7 +238,7 @@ export default function Projects() {
                 viewport={{ once: true, margin: "-10%" }}
                 variants={{
                   visible: {
-                    transition: { staggerChildren: 0.08 }
+                    transition: { staggerChildren: 0.06 }
                   }
                 }}
                 className="font-serif text-3xl sm:text-5xl md:text-7xl lg:text-[6.5rem] text-mahogany font-light leading-none mb-5 sm:mb-8 text-center drop-shadow-[0_4px_24px_rgba(255,255,255,0.5)]"
@@ -253,20 +246,14 @@ export default function Projects() {
                 {"Selected".split(" ").map((word, i) => (
                   <motion.span 
                     key={`proj-${i}`} 
-                    variants={{
-                      hidden: { opacity: 0, y: 20 },
-                      visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-                    }}
+                    variants={wordVariant}
                     className="inline-block mr-[0.25em]"
                   >
                     {word}
                   </motion.span>
                 ))}
                 <motion.span 
-                  variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-                  }}
+                  variants={wordVariant}
                   className="italic text-drift inline-block"
                 >
                   Projects
@@ -275,10 +262,10 @@ export default function Projects() {
 
               {/* Interactive Pill Filters */}
               <motion.div 
-                initial={{ opacity: 0, scale: 0.95, y: 15 }}
-                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
                 className="flex flex-wrap justify-center gap-2 md:gap-3"
               >
                 {tags.map((tag) => {
@@ -288,14 +275,14 @@ export default function Projects() {
                       key={tag.name}
                       onClick={() => setActiveTag(tag.name)}
                       className={`
-                        px-3 sm:px-5 py-2 sm:py-2.5 rounded-full border shadow-[0_2px_10px_rgba(88,51,30,0.02)] flex items-center justify-center gap-1 sm:gap-1.5 transition-all duration-500 ease-[0.16,1,0.3,1]
+                        px-3 sm:px-5 py-2 sm:py-2.5 rounded-full border shadow-[0_2px_10px_rgba(88,51,30,0.02)] flex items-center justify-center gap-1 sm:gap-1.5 transition-all duration-300 ease-out
                         ${isActive 
                           ? 'bg-mahogany text-white border-mahogany scale-105 shadow-xl' 
                           : 'bg-white/70 text-mahogany border-white/40 hover:border-mahogany/40 hover:bg-white/90 hover:scale-105'}
                       `}
                     >
                       <span className="text-xs sm:text-sm md:text-[15px] font-sans font-medium tracking-tight leading-none">{tag.name}</span>
-                      <span className={`text-[8px] sm:text-[9px] font-mono tracking-widest leading-none relative -top-1 sm:-top-1.5 transition-colors duration-500 ${isActive ? 'text-white/70' : 'text-drift'}`}>
+                      <span className={`text-[8px] sm:text-[9px] font-mono tracking-widest leading-none relative -top-1 sm:-top-1.5 transition-colors duration-300 ${isActive ? 'text-white/70' : 'text-drift'}`}>
                         {tag.count}
                       </span>
                     </button>

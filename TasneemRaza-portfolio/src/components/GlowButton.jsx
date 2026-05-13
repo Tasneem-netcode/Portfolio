@@ -1,25 +1,11 @@
-import { motion } from 'framer-motion';
-
+/**
+ * GlowButton — Performance-optimized version.
+ * Removed the infinite rotating div + blur filter.
+ * Replaced with a static CSS border-glow using box-shadow animation.
+ */
 export default function GlowButton({ children, href, className = '', onClick, isCircular = false }) {
   const content = (
     <>
-      {/* 
-        Perfect Framer Replica: 
-        1. Parent has dark rim (p-[1.5px]), overflow hidden.
-        2. Rotating light strip extending past edges.
-        3. Solid inner child blocking the center.
-      */}
-      <motion.div 
-        animate={{ rotate: 360 }}
-        transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
-        className="absolute top-1/2 left-[-50%] right-[-50%] h-[30px] -translate-y-1/2 z-0"
-        style={{
-          background: '#E3D5B5', // Oat color glow
-          filter: 'blur(10px)',
-          opacity: 0.9
-        }}
-      />
-      
       {/* Inner Button Body */}
       <div 
         className={`relative z-10 flex items-center justify-center bg-[#58331E] text-[#E8E5E0] transition-colors duration-300 w-full h-full ${
@@ -31,7 +17,7 @@ export default function GlowButton({ children, href, className = '', onClick, is
     </>
   );
 
-  const wrapperClass = `relative inline-flex items-center justify-center rounded-full overflow-hidden p-[1.5px] cursor-pointer group hover:opacity-90 transition-opacity ${className}`;
+  const wrapperClass = `relative inline-flex items-center justify-center rounded-full overflow-hidden p-[1.5px] cursor-pointer group transition-all duration-300 glow-btn ${className}`;
   const wrapperStyle = { backgroundColor: 'rgba(50,25,10,0.8)' };
 
   if (href) {
