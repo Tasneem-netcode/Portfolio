@@ -1,5 +1,5 @@
 const projects = [
-  { src: '/public/img1.png', label: 'Landing Page' },
+  { src: '/img1.png', label: 'Landing Page' },
   { src: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&h=400&q=80', label: 'Web App' },
   { src: 'https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?auto=format&fit=crop&w=600&h=400&q=80', label: 'UI Design' },
   { src: 'https://images.unsplash.com/photo-1551650975-87deedd944c3?auto=format&fit=crop&w=600&h=400&q=80', label: 'Mobile App' },
@@ -55,7 +55,7 @@ export default function Marquee() {
                   src={p.src}
                   alt={p.label}
                   className="w-full h-full object-cover"
-                  loading="lazy"
+                  loading="eager"
                 />
               </div>
 

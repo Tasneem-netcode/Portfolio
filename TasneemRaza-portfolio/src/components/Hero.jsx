@@ -151,7 +151,7 @@ export default function Hero() {
                        src={img.src}
                        alt={img.label}
                        className="w-full h-full object-cover"
-                       loading="lazy"
+                       loading="eager"
                      />
                    </div>
                 </div>

@@ -209,7 +209,7 @@ export default function Process() {
                 <>
                   <div className="w-[180px] lg:w-[220px] xl:w-[280px] aspect-[4/5] bg-white/40 p-2 lg:p-3 shadow-[0_12px_40px_rgba(88,51,30,0.06)] border border-white/60 flex flex-col relative">
                     <div className="w-full h-full overflow-hidden premium-img-wrapper">
-                      <img src={stage.img} alt={stage.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" loading="lazy" />
+                      <img src={stage.img} alt={stage.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" loading="eager" />
                     </div>
                   </div>
                   <div className="max-w-[200px] lg:max-w-[260px] xl:max-w-[320px]">
@@ -227,7 +227,7 @@ export default function Process() {
                   </div>
                   <div className="w-[180px] lg:w-[220px] xl:w-[280px] aspect-[4/5] bg-white/40 p-2 lg:p-3 shadow-[0_12px_40px_rgba(88,51,30,0.06)] border border-white/60 flex flex-col relative">
                     <div className="w-full h-full overflow-hidden premium-img-wrapper">
-                      <img src={stage.img} alt={stage.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" loading="lazy" />
+                      <img src={stage.img} alt={stage.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" loading="eager" />
                     </div>
                   </div>
                 </>
@@ -249,7 +249,7 @@ export default function Process() {
             >
               <div className="w-full aspect-[4/3] sm:aspect-[4/5] bg-white/40 p-2 sm:p-3 shadow-[0_12px_40px_rgba(88,51,30,0.06)] border border-white/60 flex flex-col relative">
                 <div className="w-full h-full overflow-hidden premium-img-wrapper">
-                  <img src={stage.img} alt={stage.title} className="w-full h-full object-cover" loading="lazy" />
+                  <img src={stage.img} alt={stage.title} className="w-full h-full object-cover" loading="eager" />
                 </div>
               </div>
               <div className="max-w-full">

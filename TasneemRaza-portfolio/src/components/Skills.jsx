@@ -43,7 +43,7 @@ const SkillCard = memo(function SkillCard({ skill, uniqueId, isHovered, onEnter,
             alt={skill.name} 
             className="w-full h-full object-cover rounded-full pointer-events-none premium-img-wrapper" 
             draggable={false}
-            loading="lazy" 
+            loading="eager" 
           />
         </div>
         

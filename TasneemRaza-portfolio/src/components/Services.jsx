@@ -300,7 +300,7 @@ export default function Services() {
                       src={img} 
                       alt="Portfolio web sample" 
                       className="w-full h-full object-cover"
-                      loading="lazy"
+                      loading="eager"
                     />
                   </div>
                 </div>

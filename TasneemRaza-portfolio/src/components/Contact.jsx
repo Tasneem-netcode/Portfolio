@@ -87,7 +87,7 @@ export default function Contact() {
             <div className="origin-center transition-transform duration-700 hover:scale-105 polaroid-float" style={{ animationDelay: `${i * -1.3}s` }}>
               <div className="bg-white/70 rounded-2xl p-2.5 pb-6 shadow-[0_16px_48px_rgba(88,51,30,0.08)]">
                 <div className="w-full h-48 overflow-hidden rounded-xl">
-                  <img src={p.src} alt={p.alt} className="w-full h-full object-cover" loading="lazy" />
+                  <img src={p.src} alt={p.alt} className="w-full h-full object-cover" loading="eager" />
                 </div>
               </div>
             </div>

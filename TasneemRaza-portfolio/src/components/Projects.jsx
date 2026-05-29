@@ -127,12 +127,7 @@ const ProjectCard = memo(function ProjectCard({ project, index }) {
   const isEven = index % 2 === 0;
   
   return (
-    <motion.div
-      variants={cardVariants}
-      initial="initial"
-      whileInView="animate"
-      viewport={{ once: true, margin: "-40px" }}
-      exit="exit"
+    <div
       className="group flex flex-col w-full outline-none transition-transform duration-300 hover:-translate-y-1 relative"
       style={{ marginTop: isEven ? '0px' : (typeof window !== 'undefined' && window.innerWidth < 768 ? '0px' : '40px') }}
     >
@@ -152,7 +147,7 @@ const ProjectCard = memo(function ProjectCard({ project, index }) {
           src={project.image} 
           alt={project.title}
           className="w-full h-full object-cover transition-transform duration-500 ease-out scale-[1.02] group-hover/image:scale-[1.05]"
-          loading="lazy"
+          loading="eager"
         />
         <div className="absolute inset-0 bg-gold/10 mix-blend-multiply opacity-0 transition-opacity duration-300 group-hover/image:opacity-100 pointer-events-none" />
         
@@ -200,7 +195,7 @@ const ProjectCard = memo(function ProjectCard({ project, index }) {
           {project.impact}
         </p>
       </div>
-    </motion.div>
+    </div>
   );
 });
 
@@ -295,16 +290,13 @@ export default function Projects() {
           <div className="h-4 sm:h-8" />
 
           {/* 2-Column Grid */}
-          <motion.div 
-            layout
+          <div 
             className="grid grid-cols-1 md:grid-cols-2 gap-x-6 sm:gap-x-8 lg:gap-x-12 gap-y-8 sm:gap-y-10 lg:gap-y-16 w-full mt-6 sm:mt-10 relative z-10"
           >
-            <AnimatePresence mode="popLayout">
-              {filteredProjects.map((project, index) => (
-                <ProjectCard key={project.id} project={project} index={index} />
-              ))}
-            </AnimatePresence>
-          </motion.div>
+            {filteredProjects.map((project, index) => (
+              <ProjectCard key={project.id} project={project} index={index} />
+            ))}
+          </div>
 
        </div>
     </section>

@@ -6,7 +6,6 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
 import Background from './components/Background';
-import Cursor from './components/Cursor';
 
 /* ── Lazy-loaded route components ── */
 const Projects = lazy(() => import('./components/Projects'));
@@ -77,7 +76,6 @@ function AnimatedRoutes() {
 function App() {
   return (
     <Router>
-      <Cursor />
       <SmoothScroll>
         <Background />
         {/* Navbar top/bottom fades are inside Navbar now — no backdrop-blur here */}

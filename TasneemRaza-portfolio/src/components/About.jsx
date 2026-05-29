@@ -29,7 +29,7 @@ export default function About() {
         >
           <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-[1.25rem] overflow-hidden shadow-[0_12px_40px_rgba(88,51,30,0.25)] bg-[#E8E5E0] p-1 shrink-0 ring-4 ring-[#E3D5B5]/40 transition-shadow duration-500 hover:shadow-[0_16px_50px_rgba(88,51,30,0.35)]">
              <div className="w-full h-full rounded-[1rem] overflow-hidden">
-               <img src="/pyf.png" alt="Tasneem Raza" className="w-full h-full object-cover" />
+               <img src="/pyf.png" alt="Tasneem Raza" className="w-full h-full object-cover" loading="eager" />
              </div>
           </div>
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
